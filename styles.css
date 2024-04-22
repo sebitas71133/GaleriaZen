@@ -1,0 +1,177 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-size: 16px;
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  
+  overflow-x: hidden;
+  background-color: #1f1f1f;
+  min-width: 100vw;
+  transition: 600ms ease-in-out !important;
+
+  position: relative; /*OJO*/
+
+  box-sizing: border-box;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: normal;  
+  padding: 1rem;
+  background-color: #1f1f1f;
+  margin: 1rem;
+  overflow-x: auto;
+  position: relative;
+
+  box-sizing: border-box;
+}
+
+
+/* ICONOS DENTRO DE CONTENEDOR IMAGENES */
+
+
+
+
+
+.container-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  align-items: center;
+
+  
+  padding: 1rem;
+  margin: 1rem;
+  border: 3px solid #363062;
+  border-radius: 10px;
+  
+  background-color: #333333;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  /* margin-right: 4rem; */
+  position: relative;
+
+  /* grid-template-columns: repeat(4, minmax(300px, 300px)); */
+  /* grid-template-columns: repeat(4, minmax(auto-fill, 1fr)); */
+  gap: 5px;
+
+  box-sizing: border-box;
+}
+
+
+.container-images img {
+  width: 100%;
+  height: auto;
+  /* height: 100%;
+  object-fit: cover; */
+
+  border-radius: 10px;
+}
+
+
+.title {
+  color: white;
+  font-size: 3rem;
+  font-weight: bolder;
+  align-self: center;
+  text-align: center !important;
+}
+
+.imagen-zoom {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  width: 100%;
+  height: 100vh;
+
+  background-color: rgb(31, 31, 31, 0.9);
+  overflow-x: auto;
+}
+
+#imagenZoom {
+  height: 100vh;
+}
+
+.imagen-zoom.visible {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#imageClose {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width:5rem;
+  height:5rem;
+  z-index: 10;
+  cursor: pointer;
+  overflow-x: scroll;
+  opacity: 0.5;
+}
+
+#imageBorrar {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width:5rem;
+  height:5rem;
+  z-index: 50;
+  cursor: pointer;
+  overflow-x: scroll;
+  opacity: 0.5;
+}
+
+#imageEnter {
+  position: absolute;
+  top: 140px;
+  right: 20px;
+  width:5rem;
+  height:5rem;
+  z-index: 50;
+  cursor: pointer;
+  overflow-x: scroll;
+  opacity: 0.5;
+}
+
+#imageNext {
+  position: absolute;
+  top: 300px;
+  right: 20px;
+  width: 8rem;
+  height: 8rem;
+  z-index: 50;
+  cursor: pointer;
+  overflow-x: scroll;
+
+  opacity: 0.5;
+}
+
+#imageLeft {
+  position: absolute;
+  top: 300px;
+  left: 20px;
+  width: 8rem;
+  height: 8rem;
+  z-index: 50;
+  cursor: pointer;
+  overflow-x: scroll;
+
+  opacity: 0.5;
+}
+
+.container-images.top.ocultar {
+  display: none;
+}

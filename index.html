@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="header.css" />
+    <link rel="stylesheet" href="form.css" />
+    
+
+    <title>Album de Imagenes</title>
+  </head>
+  <body>
+    <header>
+      <div class="title">
+        <span><a href="#" id="recargarPagina">Album Zen</a></span>
+      </div>
+      
+      <div class="imagenes-box">
+
+        <div class="imagen-box">
+
+          <label>UPLOAD</label>
+          <img
+            id="icon_add"
+            onclick="addPictures()"
+            src="./images/icons/guardar-datos.png"
+            alt=""
+          />
+          
+        </div>
+
+        <div class="imagen-box">
+
+          <label>DELETE</label>
+            <img
+          id="icon_delete"
+          onclick="deleteAll()"
+          src="./images/icons/eliminar-base-de-datos.png"
+          alt=""
+          />
+          
+        </div>
+
+        
+
+        <div class="imagen-box">
+          <label>SCREENSHOT</label>
+          <img
+          id="icon_descargar"
+          src="./images/icons/camara.png"
+          alt=""  
+          />
+          
+          
+        </div>
+  
+        <div class="imagen-box">
+
+          <label>EXPORT</label>
+          <img
+          id="icon_exportar"
+          onclick="guardarAlbum()"
+          src="./images/icons/descargando-datos.png"
+          alt=""
+          
+          />
+          
+        </div>
+
+        <div class="imagen-box" style="margin-top: 3rem;">
+          <label>IMPORT</label>
+          <img
+          id="icon_subir"
+          onclick="importarAlbum()"
+          src="./images/icons/subir.png"
+          alt="" 
+        />
+
+        
+        <div class="input-box">
+          <input  type="file" id="fileInputI" name="filesI[]" multiple accept=".json" />
+        </div>
+          
+        </div>
+  
+        
+      
+      </div>
+      
+    </header>
+    <main id="pageCapture">
+      
+      <form id="uploadForm" enctype="multipart/form-data">
+        <div class="input-box">
+          <input type="file" id="fileInput" name="files[]" multiple accept="image/*"/>
+        </div>
+        <div class="container-botones">
+          <button type="submit">Subir</button>
+          <button type="button" id="btnSalir">Cancelar</button>
+        </div>
+      </form>
+
+      <div class="title" id="title" contenteditable="true">
+        .....
+      </div>
+      <div class="container-images" id="gallery">
+        <!-- <img src="assets/test/Abaddon_Artifact_g29lrz.webp" alt="" />
+        <img src="assets/test/Chen_Artifact_h44cqy.webp" alt="" /> -->
+      </div>
+      
+
+      <div class="imagen-zoom" id="imagen_zoom" >
+        <img
+          id="imageClose"
+          class="imageClose"
+          src="assets/icons/cerrar.png"
+          alt="cerrar.png"
+        />
+        <img
+            id="imageEnter"
+            class="imageEnter"
+            src="assets/icons/entrar.png"
+            alt="enter.png"
+          />
+
+          <img
+            id="imageBorrar"
+            class="imageBorrar"
+            src="assets/icons/borrar_red.png"
+            alt="Borrar.png"
+          />
+
+        
+        <img src="" id="imagenZoom" alt="" />
+      </div>
+    </main>
+  </body>
+
+  <script src="database/indexedDB.js"></script>
+  <script src="script.js"></script>
+
+</html>
