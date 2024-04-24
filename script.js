@@ -28,12 +28,18 @@ const handleZoomItemClick = (id,url) => {
   pathSelected = id;
   imagen_zoom.classList.toggle("visible");
   imagenZoom.src = url;
+  positionActual  = getPosition(pathSelected);  
 };
+
 
 showZoomForm = () => {
   console.log("cerrar");
   imagen_zoom.classList.toggle("visible");
 };
+
+imagenZoom.addEventListener("click",()=>{
+  imagen_zoom.classList.toggle("visible");
+})
 
 imageClose.addEventListener("click", () => {
   imagen_zoom.classList.toggle("visible");
@@ -44,6 +50,59 @@ imageEnter.addEventListener("click", () => {
   window.location.href = url;
   imagen_zoom.classList.toggle("visible");
 });
+
+//Funcion para obtener posicion mediante el id
+
+const getPosition = (id) => {
+  let position = -1;
+    array_imagenes.forEach((e,index)=>{
+        if(e.clave==id){
+           position = index;
+        }
+    })
+
+    return position;
+}
+
+//Funcion obtener imagen por posicion
+
+const getImagenByPosRight = () => {
+    if(positionActual<array_imagenes.length-1){
+      positionActual = positionActual +1;
+    }else{
+      positionActual = 0;
+    }
+    
+    return array_imagenes.filter((e,index)=>{
+      if(index==positionActual){
+        nextImage(e.url,e.clave)
+      }
+    });
+}
+
+const getImagenByPosLeft = () => {
+    
+  if(positionActual>0){
+    positionActual = positionActual -1;
+  }else{
+    positionActual = array_imagenes.length-1;
+  }
+  
+  return array_imagenes.filter((e,index)=>{
+    if(index==positionActual){
+      nextImage(e.url,e.clave)
+    }
+  });
+}
+
+//Funcion para mostrar siguiente imagen
+
+const nextImage = (image,id) => {
+  idSelected = id; 
+  imagenZoom.src = image;
+  positionActual  = getPosition(idSelected);  
+  
+};
 
  //BORRAR UNA IMAGEN PREVIEW
 
@@ -212,3 +271,7 @@ const actualizarData = async () => {
         enlaceDescarga.click();
     });
   });
+
+
+
+
