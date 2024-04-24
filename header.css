@@ -20,6 +20,7 @@ a {
     padding: 1rem;
     overflow: auto;
     box-sizing: border-box;
+    
   }
   
   header.transparente {
@@ -30,7 +31,7 @@ a {
     color: white;
     font-size: 2rem;
     font-weight: bolder;
-    
+    /* margin-bottom: 2rem; */
   }
 
   
@@ -70,6 +71,7 @@ a {
     justify-content: space-around;
     align-items: center;
     width: 80%;
+    margin-top: 2rem;
   }
 
   @media (max-width:600px){

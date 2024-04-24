@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded",async function () {
 
 
 const renderPreviews = async () => {
-   
+  
     gallery.innerHTML = array_imagenes
         .map((item) => {
             return `<img src="${item.url}" alt="" onclick= "handleZoomItemClick('${item.url}','${item.clave}')" />`;
@@ -105,7 +105,7 @@ const getPosition = (id) => {
   };
 
   showZoomForm = () => {
-    console.log("cerrar");
+   
     imagen_zoom.classList.toggle("visible");
   };
 
@@ -208,27 +208,25 @@ const deleteAll = () => {
 
 // CANVAS
 
-// document.getElementById("boton-capturar").addEventListener("click", () => {
-//     html2canvas(document.querySelector("#gallery"),{
-//       scale : 2
-//     }).then((canvas) => {
-//         const imagen = canvas.toDataURL("image/png");
-//         const enlaceDescarga = document.createElement('a');
-//         enlaceDescarga.href = imagen;
-//         enlaceDescarga.download = 'captura_de_pantalla.png';
-//         enlaceDescarga.click();
-//     });
-//   });
-
-  document.getElementById("boton-capturar").addEventListener("click", () => {
+document.getElementById("boton-capturar").addEventListener("click", () => {
     html2canvas(document.querySelector("#gallery")).then((canvas) => {
-      const imagen = canvas.toDataURL("image/png");
-      const ventanaNueva = window.open();
-      ventanaNueva.document.write(
-        '<img  src="' + imagen + '" alt="Captura de pantalla">'
-      );
+        const imagen = canvas.toDataURL("image/png");
+        const enlaceDescarga = document.createElement('a');
+        enlaceDescarga.href = imagen;
+        enlaceDescarga.download = 'captura_de_pantalla.png';
+        enlaceDescarga.click();
     });
   });
+
+  // document.getElementById("boton-capturar").addEventListener("click", () => {
+  //   html2canvas(document.querySelector("#gallery")).then((canvas) => {
+  //     const imagen = canvas.toDataURL("image/png");
+  //     const ventanaNueva = window.open();
+  //     ventanaNueva.document.write(
+  //       '<img  src="' + imagen + '" alt="Captura de pantalla">'
+  //     );
+  //   });
+  // });
 // TECLAS MOVER IMAGEN
 
 document.addEventListener('keydown', function(event) {
@@ -255,7 +253,7 @@ window.addEventListener('scroll', function() {
   });
   
 
-  // Escucha el evento input del input de número
+  // COLORES Y COLUMNAS
 columnas.addEventListener('input', ()=>{
     {
       const numColumnas = parseInt(columnas.value);
@@ -274,3 +272,10 @@ columnas.addEventListener('input', ()=>{
     const albumName = albumNameRoute.replace(/\.[^/.]+$/, "");
     return albumName;
   }
+
+  const guardarAlbum = () => {
+    comprimirImagenesEnZIP(array_imagenes)
+  }
+
+
+  

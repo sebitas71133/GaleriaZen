@@ -4,6 +4,7 @@ let array_imagenes = [];
 document.addEventListener("DOMContentLoaded", async function () {
   // Hacer una solicitud al servidor para obtener las rutas de las imágenes
    array_imagenes = await dbManager.obtenerTodo();
+   
    renderImages();
 });
 
@@ -146,3 +147,68 @@ const getNombreAlbum = (albumNameRoute) => {
   const albumName = albumNameRoute.replace(/\.[^/.]+$/, "");
   return albumName;
 }
+
+const guardarAlbum = () => {
+  console.log('hola');
+  dbManager.exportar();
+}
+
+const guardarPreviews = () => {
+  comprimirImagenesEnZIP(array_imagenes)
+}
+
+
+
+// IMPORTAR
+let arrayAlbumes ;
+let arrayImagenes;
+fileInputI.addEventListener('change', function(event) {
+
+  if(confirm("Al importar se perderan todos los datos, procure exportar primero")){
+    const archivo = event.target.files[0];
+    const lector = new FileReader();
+   
+    lector.onload = async function() {
+      const datos = JSON.parse(lector.result);
+      
+        dbManager.eliminarTodo();
+        dbManager.importar(datos);
+        array_imagenes = await dbManager.obtenerTodo();
+        renderImages();
+      fileInputI.value = null;
+    };   
+    lector.readAsText(archivo); 
+  }
+
+});
+
+const actualizarData = async () => {
+  array_imagenes = await dbManager.obtenerTodo();
+}
+
+
+
+  // COLORES Y COLUMNAS
+  columnas.addEventListener('input', ()=>{
+    {
+      const numColumnas = parseInt(columnas.value);
+      gallery.style.gridTemplateColumns = `repeat(${numColumnas}, minmax(250px, 1fr))`;
+    }
+  });
+  
+  
+  colorPicker.addEventListener('change', function() {
+      const color = this.value;
+      gallery.style.backgroundColor = color;
+  });
+
+
+  document.getElementById("boton-capturar").addEventListener("click", () => {
+    html2canvas(document.querySelector("#gallery")).then((canvas) => {
+        const imagen = canvas.toDataURL("image/png");
+        const enlaceDescarga = document.createElement('a');
+        enlaceDescarga.href = imagen;
+        enlaceDescarga.download = 'captura_de_pantalla.png';
+        enlaceDescarga.click();
+    });
+  });

@@ -78,13 +78,13 @@ main {
 }
 
 
-.title {
+/* .title {
   color: white;
   font-size: 3rem;
   font-weight: bolder;
   align-self: center;
   text-align: center !important;
-}
+} */
 
 .imagen-zoom {
   display: none;
