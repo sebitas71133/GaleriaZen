@@ -243,14 +243,14 @@ document.addEventListener('keydown', function(event) {
   });
 
 
-window.addEventListener('scroll', function() {
-    var header = document.querySelector('header');
-    if (window.scrollY > 100) {
-        header.classList.add('transparente');
-    } else {
-        header.classList.remove('transparente');
-    }
-  });
+// window.addEventListener('scroll', function() {
+//     var header = document.querySelector('header');
+//     if (window.scrollY > 100) {
+//         header.classList.add('transparente');
+//     } else {
+//         header.classList.remove('transparente');
+//     }
+//   });
   
 
   // COLORES Y COLUMNAS
