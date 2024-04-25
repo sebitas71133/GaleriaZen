@@ -159,7 +159,38 @@ class IndexedDBManager {
     };
 
     
+    obtenerParteAlbum = (quantity) => {
+        return new Promise((resolve, reject) => {
+            const connection = this.indexedDB.open(this._databaseName, this._databaseNameversion);
+            
+            connection.onsuccess = () => {
+                const db = connection.result;
+                const transaction = db.transaction(['albums'], 'readonly');
+                const objectStore = transaction.objectStore('albums');
+                const cursorRequest = objectStore.openCursor();
+                const result = [];
+                let count = 0;
+                cursorRequest.onsuccess = (event) => {
+                    const cursor = event.target.result;
+                    if (cursor && count<quantity) {
+                        result.push(cursor.value);
+                        cursor.continue(); // Continúa con el siguiente objeto
+                        count++;
+                    } else {
+                        resolve(result);
+                    }
+                };
     
+                cursorRequest.onerror = (event) => {
+                    reject(event.target.error);
+                };
+            };
+    
+            connection.onerror = (error) => {
+                reject(error);
+            };
+        });
+    }; 
     
     
 
