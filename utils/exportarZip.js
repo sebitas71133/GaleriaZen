@@ -1,7 +1,7 @@
 function comprimirImagenesEnZIP(arrayImagenes) {
     const zip = new JSZip();
     const fetchPromises = [];
-
+    document.querySelector('.loader').style.display = 'block';
     // Iterar sobre cada objeto de imagen en el array
     arrayImagenes.forEach((imagen, index) => {
         // Obtener el nombre del archivo de imagen
@@ -30,6 +30,7 @@ function comprimirImagenesEnZIP(arrayImagenes) {
                     link.download = 'imagenes.zip';
                     // Simular clic en el enlace para iniciar la descarga
                     link.click();
+                    document.querySelector('.loader').style.display = 'none';
                 })
                 .catch(error => {
                     console.error('Error al generar el archivo ZIP:', error);

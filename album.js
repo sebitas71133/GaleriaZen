@@ -157,13 +157,14 @@ fileInput.addEventListener("change", async function () {
 uploadForm.addEventListener("submit", async function (event) {
   event.preventDefault();
   try {
-  
+    document.querySelector('.loader').style.display = 'block';
       dbManager.agregarImagenesAlbum(convertedImages);
       array_imagenes = await dbManager.consultarImagenesPorAlbum(albumName);
       convertedImages.length = 0;
       fileInput.value = null; 
       uploadForm.classList.toggle("visible");
       renderPreviews();
+      document.querySelector('.loader').style.display = 'none';
   } catch (error) {
     console.error(error);
   }
@@ -211,12 +212,14 @@ const deleteAll = () => {
 // CANVAS
 
 document.getElementById("boton-capturar").addEventListener("click", () => {
+    document.querySelector('.loader').style.display = 'block';
     html2canvas(document.querySelector("#gallery")).then((canvas) => {
         const imagen = canvas.toDataURL("image/png");
         const enlaceDescarga = document.createElement('a');
         enlaceDescarga.href = imagen;
         enlaceDescarga.download = 'captura_de_pantalla.png';
         enlaceDescarga.click();
+        document.querySelector('.loader').style.display = 'none';
     });
   });
 

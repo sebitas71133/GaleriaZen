@@ -291,6 +291,7 @@ class IndexedDBManager {
     }
 
     exportar = () => {
+        document.querySelector('.loader').style.display = 'block';
         const transactionAlbum = this.db.transaction(['albums'], 'readonly');
         const albumStore = transactionAlbum.objectStore('albums');
     
@@ -332,6 +333,7 @@ class IndexedDBManager {
                     "arrayImages": arrayImagen
                 };
                 this.descargarArrayJson(objExport);
+                document.querySelector('.loader').style.display = 'none';
             })
             .catch(error => {
                 console.error('Error al obtener los datos:', error);

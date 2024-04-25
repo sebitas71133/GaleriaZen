@@ -165,13 +165,14 @@ fileInput.addEventListener("change", async function () {
 uploadForm.addEventListener("submit", async function (event) {
   event.preventDefault();
   try {
-
+    document.querySelector('.loader').style.display = 'block';
     dbManager.agregarVarios(convertedImages);
     array_imagenes = await dbManager.obtenerTodo();
     convertedImages.length = 0; // Vaciar convertedImages después de agregar las imágenes al array
     fileInput.value = null; 
     uploadForm.classList.toggle("visible");
     renderImages();
+    document.querySelector('.loader').style.display = 'none';
   } catch (error) {
     
     console.log(error);
@@ -209,8 +210,9 @@ const getNombreAlbum = (albumNameRoute) => {
 }
 
 const guardarAlbum = () => {
-  console.log('hola');
+  
   dbManager.exportar();
+  
 }
 
 const guardarPreviews = () => {
@@ -227,14 +229,15 @@ fileInputI.addEventListener('change', function(event) {
   if(confirm("Al importar se perderan todos los datos, procure exportar primero")){
     const archivo = event.target.files[0];
     const lector = new FileReader();
-   
+    document.querySelector('.loader').style.display = 'block';
     lector.onload = async function() {
       const datos = JSON.parse(lector.result);
-      
+        
         dbManager.eliminarTodo();
         dbManager.importar(datos);
         array_imagenes = await dbManager.obtenerTodo();
         renderImages();
+        document.querySelector('.loader').style.display = 'none';
       fileInputI.value = null;
     };   
     lector.readAsText(archivo); 
@@ -264,12 +267,14 @@ const actualizarData = async () => {
 
 
   document.getElementById("boton-capturar").addEventListener("click", () => {
+    document.querySelector('.loader').style.display = 'block';
     html2canvas(document.querySelector("#gallery")).then((canvas) => {
         const imagen = canvas.toDataURL("image/png");
         const enlaceDescarga = document.createElement('a');
         enlaceDescarga.href = imagen;
         enlaceDescarga.download = 'captura_de_pantalla.png';
         enlaceDescarga.click();
+        document.querySelector('.loader').style.display = 'none';
     });
   });
 
