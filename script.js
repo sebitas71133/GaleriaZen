@@ -4,7 +4,7 @@ let array_imagenes = [];
 document.addEventListener("DOMContentLoaded", async function () {
   // Hacer una solicitud al servidor para obtener las rutas de las imágenes
    document.querySelector('.loader').style.display = 'block';
-   array_imagenes = await dbManager.obtenerParteAlbum(quantityElements);
+   array_imagenes = await dbManager.obtenerParteAlbumPaginada(1);
    renderImages();
    document.querySelector('.loader').style.display = 'none';
 });
@@ -280,24 +280,38 @@ const actualizarData = async () => {
   });
 
 
+
+  imagenes.addEventListener('input', ()=>{
+    {
+      const numColumnas = parseInt(imagenes.value);
+      
+      document.querySelector('.loader').style.display = 'block';
+        setTimeout( async () => {
+        array_imagenes = await dbManager.obtenerParteAlbumPaginada(numColumnas);
+        renderImages();
+        document.querySelector('.loader').style.display = 'none';
+        cargar = false;
+      }, 1000);
+    }
+  });
   
 // Detectar el evento de desplazamiento
 
 
-let cargar = false;
-let quantityElements = 10;
-window.addEventListener("scroll", function () {
-  if (!cargar && window.innerHeight + window.scrollY >= document.body.offsetHeight-10) {
-    cargar = true;
-    document.querySelector('.loader').style.display = 'block';
-    setTimeout( async () => {
-      quantityElements = quantityElements + 5;
-      array_imagenes = await dbManager.obtenerParteAlbum(quantityElements);
-      renderImages();
-      document.querySelector('.loader').style.display = 'none';
-      cargar = false;
-    }, 1000);
-  }
-});
+// let cargar = false;
+// let quantityElements = 10;
+// window.addEventListener("scroll", function () {
+//   if (!cargar && window.innerHeight + window.scrollY >= document.body.offsetHeight-10) {
+//     cargar = true;
+//     document.querySelector('.loader').style.display = 'block';
+//     setTimeout( async () => {
+//       quantityElements = quantityElements + 5;
+//       array_imagenes = await dbManager.obtenerParteAlbum(quantityElements);
+//       renderImages();
+//       document.querySelector('.loader').style.display = 'none';
+//       cargar = false;
+//     }, 1000);
+//   }
+// });
 
 

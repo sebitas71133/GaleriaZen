@@ -62,6 +62,7 @@ form {
     width: 50%;
   }
   
+  #imagenes,
   #columnas,
   .input-box input {
     box-sizing: border-box;
@@ -81,6 +82,21 @@ form {
     position: absolute;
     top: 10px;
     right: 80px;
+  }
+
+  #imagenes {
+    width: 60px;
+    position: absolute;
+    top: 220px;
+    right: 650px;
+  }
+
+  #paginacion {
+    width: 60px;
+    position: absolute;
+    top: 235px;
+    right: 740px;
+    color: white;
   }
   
   #colorPicker {

@@ -8,7 +8,7 @@ a {
     background-color: #363062;
     width: 100vw;
     /* height: 35vh; */
-    height: 250px;
+    height: 270px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -71,7 +71,7 @@ a {
     justify-content: space-around;
     align-items: center;
     width: 80%;
-    margin-top: 2rem;
+    margin-top: 1rem;
   }
 
   @media (max-width:600px){

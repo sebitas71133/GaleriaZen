@@ -192,6 +192,44 @@ class IndexedDBManager {
         });
     }; 
     
+    obtenerParteAlbumPaginada = (quantity) => {
+        return new Promise((resolve, reject) => {
+            const connection = this.indexedDB.open(this._databaseName, this._databaseNameversion);
+            
+            connection.onsuccess = () => {
+                const db = connection.result;
+                const transaction = db.transaction(['albums'], 'readonly');
+                const objectStore = transaction.objectStore('albums');
+                const cursorRequest = objectStore.openCursor();
+                const result = [];
+                let count = 0;
+                let inicio = (quantity-1)*20;
+                let fin = inicio + 20;
+                cursorRequest.onsuccess = (event) => {
+                    const cursor = event.target.result;
+                    count++;
+                    if (cursor ) {
+
+                        if(count>inicio && count<=fin){
+                            result.push(cursor.value);
+                        }
+                        cursor.continue();      
+                    } else {
+                        resolve(result);
+                    }
+                };
+    
+                cursorRequest.onerror = (event) => {
+                    reject(event.target.error);
+                };
+            };
+    
+            connection.onerror = (error) => {
+                reject(error);
+            };
+        });
+    }; 
+    
     
 
     actualizar = (data) =>{    
