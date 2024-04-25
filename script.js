@@ -3,10 +3,10 @@ let array_imagenes = [];
 
 document.addEventListener("DOMContentLoaded", async function () {
   // Hacer una solicitud al servidor para obtener las rutas de las imágenes
+   document.querySelector('.loader').style.display = 'block';
    array_imagenes = await dbManager.obtenerTodo();
-   
    renderImages();
-   
+   document.querySelector('.loader').style.display = 'none';
 });
 
 

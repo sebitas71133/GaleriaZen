@@ -5,8 +5,10 @@ const dbManager = new IndexedDBManager('ListaAlbums', 3);
 document.addEventListener("DOMContentLoaded",async function () {
     const params = new URLSearchParams(window.location.search);
     albumName = params.get('album');
+    document.querySelector('.loader').style.display = 'block';
     array_imagenes = await dbManager.consultarImagenesPorAlbum(albumName);
     renderPreviews();
+    document.querySelector('.loader').style.display = 'none';
 });
 
 
