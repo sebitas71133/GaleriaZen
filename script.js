@@ -295,23 +295,6 @@ const actualizarData = async () => {
     }
   });
   
-// Detectar el evento de desplazamiento
 
-
-// let cargar = false;
-// let quantityElements = 10;
-// window.addEventListener("scroll", function () {
-//   if (!cargar && window.innerHeight + window.scrollY >= document.body.offsetHeight-10) {
-//     cargar = true;
-//     document.querySelector('.loader').style.display = 'block';
-//     setTimeout( async () => {
-//       quantityElements = quantityElements + 5;
-//       array_imagenes = await dbManager.obtenerParteAlbum(quantityElements);
-//       renderImages();
-//       document.querySelector('.loader').style.display = 'none';
-//       cargar = false;
-//     }, 1000);
-//   }
-// });
 
 
