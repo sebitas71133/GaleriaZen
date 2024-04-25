@@ -16,6 +16,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/file-saver@2/dist/FileSaver.min.js"></script>
 
+
+
     <title>Album de Imagenes</title>
   </head>
   <body>
@@ -105,7 +107,7 @@
         
       
       </div>
-      <input type="number" id="columnas" min="1" value="1">
+      <input type="number" id="columnas" min="1" value="4">
       <input type="color" id="colorPicker">
     </header>
     <main id="pageCapture">
@@ -128,7 +130,6 @@
         <img src="assets/test/Chen_Artifact_h44cqy.webp" alt="" /> -->
       </div>
       
-
       <div class="imagen-zoom" id="imagen_zoom" >
         <img
           id="imageClose"
@@ -136,6 +137,7 @@
           src="assets/icons/cerrar.png"
           alt="cerrar.png"
         />
+       
         <img
             id="imageEnter"
             class="imageEnter"
@@ -172,5 +174,5 @@
   <script src="utils/exportarZip.js"></script>
   <script src="database/indexedDB.js"></script>
   <script src="script.js"></script>
-
+  
 </html>

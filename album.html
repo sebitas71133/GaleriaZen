@@ -13,9 +13,7 @@
     <link rel="stylesheet" href="form.css" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/file-saver@2/dist/FileSaver.min.js"></script>
-
+ 
     <title>Album de Imagenes</title>
   </head>
   <body>
@@ -106,7 +104,7 @@
       <div class="title" id="title" contenteditable="true">
         ...
       </div>
-      <div class="container-images" id="gallery">
+      <div class="container-images album" id="gallery">
        
       </div>
       
@@ -141,6 +139,8 @@
     </main>
   </body>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/file-saver@2/dist/FileSaver.min.js"></script>
   <script src="utils/exportarZip.js"></script>
   <script src="database/indexedDB.js"></script>
   <script src="album.js"></script>

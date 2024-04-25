@@ -67,6 +67,9 @@ main {
   box-sizing: border-box;
 }
 
+.container-images.album {
+  grid-template-columns: repeat(1, minmax(250px, 1fr));
+}
 
 .container-images img {
   width: 100%;

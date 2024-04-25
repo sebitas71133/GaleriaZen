@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", async function () {
    array_imagenes = await dbManager.obtenerTodo();
    
    renderImages();
+   
 });
 
 
@@ -15,7 +16,7 @@ const renderImages = () => {
 
             return `
                
-                  <img src="${item.url}" alt="" onclick= "handleZoomItemClick('${item.clave}','${item.url}')" />
+                  <img id="zoom_01"  src="${item.url}" data-zoom-image="${item.url}" alt="" onclick= "handleZoomItemClick('${item.clave}','${item.url}')" />
                `
           
           })
