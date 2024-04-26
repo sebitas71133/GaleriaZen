@@ -167,7 +167,7 @@ uploadForm.addEventListener("submit", async function (event) {
   try {
     document.querySelector('.loader').style.display = 'block';
     dbManager.agregarVarios(convertedImages);
-    array_imagenes = await dbManager.obtenerTodo();
+    array_imagenes = await dbManager.obtenerParteAlbumPaginada(1);
     convertedImages.length = 0; // Vaciar convertedImages después de agregar las imágenes al array
     fileInput.value = null; 
     uploadForm.classList.toggle("visible");
