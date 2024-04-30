@@ -102,15 +102,17 @@ main {
   overflow-x: auto;
 }
 
-#imagenZoom {
-  height: 100vh;
-}
+
 
 .imagen-zoom.visible {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+}
+
+#imagenZoom {
+  height: 100vh;
 }
 
 #imageClose {
@@ -151,7 +153,7 @@ main {
 
 #imageNext {
   position: absolute;
-  top: 300px;
+  top: 50%;
   right: 20px;
   width: 8rem;
   height: 8rem;
@@ -164,7 +166,7 @@ main {
 
 #imageLeft {
   position: absolute;
-  top: 300px;
+  top: 50%;
   left: 20px;
   width: 8rem;
   height: 8rem;
@@ -197,3 +199,21 @@ main {
   animation: l3 1s infinite linear;
 }
 @keyframes l3 {to{transform: rotate(1turn)}}
+
+
+
+@media (max-width:720px){
+  #imagenZoom {
+    height: 50vh;
+  }
+
+  #imageLeft,
+  #imageNext,
+  #imageEnter,
+  #imageBorrar,
+  #imageClose {
+    width: 4rem;
+    height: 4rem;
+  }
+
+}

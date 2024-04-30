@@ -32,8 +32,12 @@ form {
     margin: 0.5rem;
     padding: 0.3rem;
     width: 250px;
-  
-    position: relative;
+    
+  }
+
+  .input-box.flex-row {
+     flex-direction: row;
+     justify-content: space-around;
   }
   
   .container-botones {
@@ -86,16 +90,11 @@ form {
 
   #imagenes {
     width: 60px;
-    position: absolute;
-    top: 220px;
-    right: 650px;
+    
   }
 
   #paginacion {
     width: 60px;
-    position: absolute;
-    top: 235px;
-    right: 740px;
     color: white;
   }
   
@@ -145,3 +144,22 @@ form {
     font-size: 1rem;
   }
   
+
+
+  @media (max-width:720px){
+    .input-box {
+      width: 150px !important;
+      margin: 0;
+    }
+
+    #fileInputI{
+      margin: 0;
+      padding: 0;
+      height: 1.4%;
+      width: 100px;
+      
+    }
+
+
+
+  }

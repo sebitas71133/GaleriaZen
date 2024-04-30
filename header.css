@@ -48,11 +48,11 @@ a {
     justify-content: center;
     align-items: center;
     width: 20%;
-    margin: auto;
+    margin: 0;
   }
   
   .imagen-box img {
-    width: 5rem;
+    width: 4rem;
     height: auto;
     cursor: pointer;
     z-index: 3;
@@ -71,7 +71,7 @@ a {
     justify-content: space-around;
     align-items: center;
     width: 80%;
-    margin-top: 1rem;
+   
   }
 
   @media (max-width:600px){
@@ -81,14 +81,19 @@ a {
 
     .imagen-box label{
       width: 1rem;
+      display: none;
     }
 
     .imagen-box {
-      width: 30%;
+      width: 20%;
     }
 
     .imagenes-box {
       flex-wrap: wrap;
+    }
+
+    #icon_subir {
+      margin-top: 3rem;
     }
     
   }

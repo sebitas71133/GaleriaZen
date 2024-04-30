@@ -33,7 +33,6 @@
           <label>UPLOAD</label>
           <img
             id="icon_add"
-            onclick="addPictures()"
             src="./images/icons/guardar-datos.png"
             alt=""
           />
@@ -107,11 +106,14 @@
         
       
       </div>
-      <label id="paginacion">
-        <p>Paginacion:</p>
-      </label>
+      <div class="input-box flex-row">
+        <label id="paginacion">
+          <p>Paginacion:</p>
+        </label>
+        <input type="number" id="imagenes" min="1" value="1" step="1">
+      </div>
+      
       <input type="number" id="columnas" min="1" value="4">
-      <input type="number" id="imagenes" min="1" value="1" step="1">
       <input type="color" id="colorPicker">
     </header>
     <main id="pageCapture">
@@ -159,13 +161,12 @@
 
               <img
             id="imageNext"
-            onclick="getImagenByPosRight()"
+            
             src="assets/icons/proximo.png"
             alt=""
             />
             <img
             id="imageLeft"
-            onclick="getImagenByPosLeft()"
             src="assets/icons/anterior.png"
             alt=""
             />
