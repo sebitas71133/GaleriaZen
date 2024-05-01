@@ -203,8 +203,8 @@ class IndexedDBManager {
         const cursorRequest = objectStore.openCursor();
         const result = [];
         let count = 0;
-        let inicio = (quantity - 1) * 20;
-        let fin = inicio + 20;
+        let inicio = (quantity - 1) * 40;
+        let fin = inicio + 40;
         cursorRequest.onsuccess = (event) => {
           const cursor = event.target.result;
           count++;

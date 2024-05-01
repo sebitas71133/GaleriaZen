@@ -14,7 +14,7 @@ const renderImages = () => {
     .map((item) => {
       return `
                
-                  <img src="${item.url}" alt="" onclick= "handleZoomItemClick('${item.clave}','${item.url}')" />
+                  <img loading="lazy" src="${item.url}" alt="" onclick= "handleZoomItemClick('${item.clave}','${item.url}')" />
                `;
     })
     .join("");
