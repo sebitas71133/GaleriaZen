@@ -14,7 +14,7 @@ const renderImages = () => {
     .map((item) => {
       return `
                
-                  <img id="zoom_01"  src="${item.url}" data-zoom-image="${item.url}" alt="" onclick= "handleZoomItemClick('${item.clave}','${item.url}')" />
+                  <img src="${item.url}" alt="" onclick= "handleZoomItemClick('${item.clave}','${item.url}')" />
                `;
     })
     .join("");
