@@ -97,7 +97,9 @@ main {
   z-index: 99;
   width: 100%;
   height: 100vh;
-
+  /* width: 100%;
+  height: 100%; */
+  
   background-color: rgb(31, 31, 31, 0.9);
   overflow-x: auto;
 }
@@ -113,6 +115,9 @@ main {
 
 #imagenZoom {
   height: 100vh;
+  
+ 
+  /* object-fit: cover; */
 }
 
 #imageClose {
@@ -215,5 +220,9 @@ main {
     width: 4rem;
     height: 4rem;
   }
+
+  /* .imagen-zoom.visible {
+
+  } */
 
 }

@@ -1,15 +1,24 @@
 let albumName = "";
+let pagina = 1;
+let cantidadSeleccionada = 10;
 let array_imagenes = [];
 const dbManager = new IndexedDBManager("ListaAlbums", 3);
 
 document.addEventListener("DOMContentLoaded", async function () {
   const params = new URLSearchParams(window.location.search);
   albumName = params.get("album");
+  pagina = params.get("pagina");
+  cantidadSeleccionada = params.get("cantidad");
   document.querySelector(".loader").style.display = "block";
   array_imagenes = await dbManager.getImagesByAlbumId(albumName);
   renderPreviews();
   document.querySelector(".loader").style.display = "none";
 });
+
+recargarPagina.addEventListener("click",()=>{
+     const url = `index.html?pagina=${pagina}&cantidad=${parseInt(cantidadSeleccionada)}`
+     window.location.href = url;
+})
 
 const renderPreviews = async () => {
   gallery.innerHTML = array_imagenes

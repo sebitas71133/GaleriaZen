@@ -23,7 +23,7 @@
   <body>
     <header style="position: unset;">
       <div class="title">
-        <span><a href="#" id="recargarPagina">Album Zen</a></span>
+        <span><a href="index.html" id="recargarPagina">Album Zen</a></span>
       </div>
       
       <div class="imagenes-box">
@@ -107,10 +107,26 @@
       
       </div>
       <div class="input-box flex-row">
-        <label id="paginacion">
-          <p>Paginacion:</p>
-        </label>
-        <input type="number" id="imagenes" min="1" value="1" step="1">
+        <div>
+          <label id="paginacion">
+            <p>#Pagina:</p>
+          </label>
+          <input type="number" id="imagenes" min="1" value="1" step="1">
+        </div>
+
+        <div>
+          <label>
+            <p>#Imagenes:</p>
+          </label>
+          <select name="cantidad" id="cantidad">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+        
       </div>
       
       <input type="number" id="columnas" min="1" value="4">

@@ -189,13 +189,12 @@ class IndexedDBManager {
     });
   };
 
-  obtenerParteAlbumPaginada = (quantity) => {
+  obtenerParteAlbumPaginada = (pagina,cantidadSeleccionada) => {
     return new Promise((resolve, reject) => {
       const connection = this.indexedDB.open(
         this._databaseName,
         this._databaseNameversion
       );
-
       connection.onsuccess = () => {
         const db = connection.result;
         const transaction = db.transaction(["albums"], "readonly");
@@ -203,8 +202,9 @@ class IndexedDBManager {
         const cursorRequest = objectStore.openCursor();
         const result = [];
         let count = 0;
-        let inicio = (quantity - 1) * 40;
-        let fin = inicio + 40;
+        let inicio = (pagina - 1) * cantidadSeleccionada;
+        
+        let fin = inicio + cantidadSeleccionada;
         cursorRequest.onsuccess = (event) => {
           const cursor = event.target.result;
           count++;
