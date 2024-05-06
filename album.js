@@ -7,8 +7,6 @@ const dbManager = new IndexedDBManager("ListaAlbums", 3);
 document.addEventListener("DOMContentLoaded", async function () {
   const params = new URLSearchParams(window.location.search);
   albumName = params.get("album");
-  pagina = params.get("pagina");
-  cantidadSeleccionada = params.get("cantidad");
   document.querySelector(".loader").style.display = "block";
   array_imagenes = await dbManager.getImagesByAlbumId(albumName);
   renderPreviews();
@@ -16,11 +14,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 recargarPagina.addEventListener("click",()=>{
-     const url = `index.html?pagina=${pagina}&cantidad=${parseInt(cantidadSeleccionada)}`
+     const url = `index.html`
      window.location.href = url;
 })
 
 const renderPreviews = async () => {
+  array_imagenes = await dbManager.getImagesByAlbumId(albumName);
   gallery.innerHTML = array_imagenes
     .map((item) => {
       return `<img src="${item.url}" alt="" onclick= "handleZoomItemClick('${item.url}','${item.clave}')" />`;
@@ -28,16 +27,6 @@ const renderPreviews = async () => {
     .join("");
 };
 
-const getData = async () => {
-  try {
-    const response = await fetch(`/images?albumName=${albumName}`);
-    const imagePaths = await response.json();
-    return imagePaths;
-  } catch (error) {
-    console.error("Error al obtener las rutas de las imágenes:", error);
-    throw error;
-  }
-};
 
 // COMPORTAMIENTO ZOOM AL HACER CLICK IMAGEN
 
@@ -122,8 +111,6 @@ function convertirArchivoAURLBase64ConID(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = function () {
-      // console.log(file);
-      // const id = getNombreAlbum(file.name);
       const id =
         "image_" +
         Date.now() +
@@ -188,7 +175,6 @@ btnSalir.addEventListener("click", () => {
 imageBorrar.addEventListener("click", () => {
   if (confirm("¿Estás seguro de borrar la imagen?")) {
     dbManager.deleteImageById(idSelected);
-    array_imagenes = array_imagenes.filter((e) => e.clave != idSelected);
   }
   imagen_zoom.classList.toggle("visible");
   renderPreviews();
@@ -198,7 +184,6 @@ imageBorrar.addEventListener("click", () => {
 
 const deleteAll = () => {
   if (confirm("¿Estás seguro de borrar todas las imagenes?")) {
-    // itemRepository.removeAll();
     array_imagenes.length = 0;
     dbManager.deleteImagesByAlbumId(albumName);
     renderPreviews();
@@ -219,15 +204,7 @@ document.getElementById("boton-capturar").addEventListener("click", () => {
   });
 });
 
-// document.getElementById("boton-capturar").addEventListener("click", () => {
-//   html2canvas(document.querySelector("#gallery")).then((canvas) => {
-//     const imagen = canvas.toDataURL("image/png");
-//     const ventanaNueva = window.open();
-//     ventanaNueva.document.write(
-//       '<img  src="' + imagen + '" alt="Captura de pantalla">'
-//     );
-//   });
-// });
+
 // TECLAS MOVER IMAGEN
 
 document.addEventListener("keydown", function (event) {
