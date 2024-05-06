@@ -2,13 +2,14 @@ let albumName = "";
 let pagina = 1;
 let cantidadSeleccionada = 10;
 let array_imagenes = [];
-const dbManager = new IndexedDBManager("ListaAlbums", 3);
+let array_videos = [];
+const dbManager = new IndexedDBManager("ListaAlbums", 4);
 
 document.addEventListener("DOMContentLoaded", async function () {
   const params = new URLSearchParams(window.location.search);
   albumName = params.get("album");
   document.querySelector(".loader").style.display = "block";
-  array_imagenes = await dbManager.getImagesByAlbumId(albumName);
+  // array_imagenes = await dbManager.getImagesByAlbumId(albumName);
   renderPreviews();
   document.querySelector(".loader").style.display = "none";
 });
@@ -20,14 +21,35 @@ recargarPagina.addEventListener("click",()=>{
 
 const renderPreviews = async () => {
   array_imagenes = await dbManager.getImagesByAlbumId(albumName);
+  array_videos   = await dbManager.getVideosByAlbumId(albumName)
   gallery.innerHTML = array_imagenes
     .map((item) => {
       return `<img src="${item.url}" alt="" onclick= "handleZoomItemClick('${item.url}','${item.clave}')" />`;
     })
     .join("");
+
+  galleryVideos.innerHTML = array_videos
+    .map((item) => {
+      return `
+        <div>
+          <video  muted  controls>
+            <source src="data:video/mp4;base64,${item.url}">
+            Tu navegador no soporta la etiqueta de video.
+          </video>
+          <button onclick="handleDeleteClick('${item.clave}')">Borrar</button>
+        </div>
+      `; 
+    })
+    .join("");
 };
 
+const handleDeleteClick = (clave) => {
 
+  if(confirm("Seguro?")){
+    dbManager.deleteVideoById(clave);
+    renderPreviews();
+  }
+}
 // COMPORTAMIENTO ZOOM AL HACER CLICK IMAGEN
 
 let idSelected;
@@ -111,11 +133,7 @@ function convertirArchivoAURLBase64ConID(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = function () {
-      const id =
-        "image_" +
-        Date.now() +
-        "_" +
-        Math.random().toString(36).substring(2, 8);
+      const id = generateSecureRandomId();
       resolve({ clave: id, url: reader.result, id_album: albumName });
     };
     reader.onerror = function (error) {
@@ -125,25 +143,53 @@ function convertirArchivoAURLBase64ConID(file) {
   });
 }
 
-let convertedImages = [];
-fileInput.addEventListener("change", async function () {
-  const files = this.files;
+async function convertirVideoAURLBase64ConID(file) {
+  let arrayBuffer= "";
+  let base64String="";
 
-  for (let i = 0; i < files.length; i++) {
-    if (files[i].type.startsWith("image/")) {
-      try {
-        const { clave, url, id_album } = await convertirArchivoAURLBase64ConID(
-          files[i]
-        );
-        convertedImages.push({ clave, url, id_album }); // Agregar la imagen convertida al array
-      } catch (error) {
-        console.error("Error al convertir el archivo:", error);
+  arrayBuffer = await  readFileAsArrayBuffer(file);
+  base64String = arrayBufferToBase64(arrayBuffer);
+  const id = generateSecureRandomId();
+  return  data = {
+            "clave" : id,
+            "url" :   base64String,
+            "id_album" : albumName
+          }
+}
+
+
+let convertedImages = [];
+let convertedVideos = [];
+let data;
+fileInput.addEventListener("change", async function (event) {
+  const files = event.target.files;
+ 
+
+  if (!files) return;
+
+  try {
+      
+    for (const file of files) {
+      if (file.type.includes("video")) {
+        const { clave, url, id_album } = await convertirVideoAURLBase64ConID(file);
+         convertedVideos.push({clave,url,id_album})
+        //  console.log(convertedVideos);
+      } else if (file.type.includes("image")) {
+        const { clave, url, id_album } = await convertirArchivoAURLBase64ConID(file);
+         convertedImages.push({ clave, url, id_album }); 
+        //  console.log(convertedImages);
+      }else{
+        alert("Por favor, seleccione imagenes/videos");
       }
-    } else {
-      fileInput.value = null;
-      alert("Por favor, seleccione solo imágenes.");
     }
+  
+  } catch (error) {
+      console.error(error);
+  } finally{
+      fileInput.value = null;
   }
+
+ 
 });
 
 // FORMULARIO CONFIRMAR - CANCELAR SUBIR IMAGENES
@@ -152,14 +198,16 @@ uploadForm.addEventListener("submit", async function (event) {
   try {
     document.querySelector(".loader").style.display = "block";
     dbManager.agregarImagenesAlbum(convertedImages);
-    array_imagenes = await dbManager.getImagesByAlbumId(albumName);
-    convertedImages.length = 0;
-    fileInput.value = null;
-    uploadForm.classList.toggle("visible");
+    dbManager.agregarVideosAlbum(convertedVideos);
     renderPreviews();
     document.querySelector(".loader").style.display = "none";
   } catch (error) {
     console.error(error);
+  } finally {
+    convertedImages.length = 0; //ya no es necesario
+    convertedVideos.length = 0;
+    fileInput.value = null;
+    uploadForm.classList.toggle("visible");
   }
 });
 
@@ -167,6 +215,7 @@ uploadForm.addEventListener("submit", async function (event) {
 
 btnSalir.addEventListener("click", () => {
   convertedImages.length = 0;
+  convertedVideos.length = 0;
   fileInput.value = null;
   uploadForm.classList.toggle("visible");
 });
@@ -237,10 +286,16 @@ columnas.addEventListener("input", () => {
   }
 });
 
-colorPicker.addEventListener("change", function () {
-  const color = this.value;
-  gallery.style.backgroundColor = color;
+
+columnasVideos.addEventListener("input", () => {
+  {
+    const numColumnas = parseInt(columnasVideos.value);
+    console.log(numColumnas);
+    galleryVideos.style.gridTemplateColumns = `repeat(${numColumnas}, minmax(250px, 1fr))`;
+  }
 });
+
+
 
 const getNombreAlbum = (albumNameRoute) => {
   const albumName = albumNameRoute.replace(/\.[^/.]+$/, "");
@@ -250,3 +305,37 @@ const getNombreAlbum = (albumNameRoute) => {
 const guardarAlbum = () => {
   comprimirImagenesEnZIP(array_imagenes);
 };
+
+
+
+
+// VIDEOS
+
+function readFileAsArrayBuffer(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      resolve(event.target.result);
+    };
+    reader.onerror = (error) => {
+      reject(error);
+    };
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+// Función para convertir un ArrayBuffer en una cadena base64
+function arrayBufferToBase64(arrayBuffer) {
+  const bytes = new Uint8Array(arrayBuffer);
+  let binary = '';
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+
+function generateSecureRandomId() {
+  const array = new Uint32Array(1);
+  window.crypto.getRandomValues(array);
+  return array[0].toString(16);
+}

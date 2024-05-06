@@ -84,8 +84,18 @@
       </div>
       
       
-      <input type="number" id="columnas" min="1" value="1">
-      <input type="color" id="colorPicker">
+      <div class="opciones-columnas">
+        <label class="label-input-columnas" for="columnas">
+          #Columnas:
+          <input type="number" id="columnas" name="columnas" min="1" value="1">
+        </label>
+       <label class="label-input-columnas videos" for="columnasVideos">
+            #Videos:
+            <input type="number" id="columnasVideos" min="1" value="1" style="margin-left: 20px;">
+        </label>
+      </div>
+      
+      
     </header>
     
 
@@ -95,20 +105,27 @@
       <div class="loader"></div> 
       <form id="uploadForm" enctype="multipart/form-data">
         <div class="input-box">
-          <input type="file" id="fileInput" name="files[]" multiple accept="image/*"/>
+          <input type="file" id="fileInput" name="files[]" multiple accept="image/*,video/*"/>
         </div>
         <div class="container-botones">
           <button type="submit">Subir</button>
           <button type="button" id="btnSalir">Cancelar</button>
         </div>
       </form>
-      
+      <div class="title"  contenteditable="true">
+        Videos :
+      </div>
+      <div class="container-images video" id="galleryVideos">
+        
+      </div>
       <div class="title"  contenteditable="true">
         Imagenes :
       </div>
       <div class="container-images album" id="gallery">
        
       </div>
+
+      
       
 
       <div class="imagen-zoom" id="imagen_zoom">

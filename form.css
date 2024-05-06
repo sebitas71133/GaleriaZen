@@ -11,7 +11,7 @@ form {
     border-radius: 15px;
     border: 1px solid white;
     min-width: 280px;
-  
+    
     position: fixed;
     top: 50%;
     left: 50%;
@@ -69,6 +69,7 @@ form {
   
   #imagenes,
   #columnas,
+  #columnasVideos,
   .input-box input {
     box-sizing: border-box;
     height: 2rem;
@@ -81,12 +82,29 @@ form {
     background-color: #363062;
     width: 100%;
   }
+
+  
   
   #columnas{
     width: 50px;
+
+  }
+
+  #columnasVideos {
+    width: 50px;
+  }
+
+  .opciones-columnas {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
     position: absolute;
-    top: 10px;
-    right: 80px;
+    top: 5px;
+    right: 40px;
+    color: white;
+    font-size: 1rem;
+    text-align: center;
   }
 
   #imagenes {
@@ -159,6 +177,12 @@ form {
       height: 1.4%;
       width: 100px;
       
+    }
+
+    .opciones-columnas {
+      font-size: 13px;
+      top: 5px;
+      right: 0;
     }
 
 

@@ -18,6 +18,7 @@ class IndexedDBManager {
       console.log("Base de datos creada", this.db);
       this.db.createObjectStore("albums", { keyPath: "clave" });
       this.db.createObjectStore("images", { keyPath: "clave" });
+      this.db.createObjectStore("videos", { keyPath: "clave" });
     };
 
     connection.onerror = (error) => {
@@ -87,19 +88,76 @@ class IndexedDBManager {
     });
   };
 
+  getVideosByAlbumId = (id_album) => {
+    const connection = this.indexedDB.open(
+      this._databaseName,
+      this._databaseNameversion
+    );
+    return new Promise((resolve, reject) => {
+      connection.onsuccess = () => {
+        const db = connection.result;
+        const transaction = db.transaction(["videos"], "readonly");
+        const videoStore = transaction.objectStore("videos");
+        const cursorRequest = videoStore.openCursor();
+        const result = [];
+
+        cursorRequest.onsuccess = (event) => {
+          const cursor = event.target.result;
+          if (cursor) {
+            const imagen = cursor.value;
+            if (imagen.id_album === id_album) {
+              result.push(imagen);
+            }
+            cursor.continue(); // Continúa con el siguiente objeto
+          } else {
+            resolve(result);
+          }
+        };
+
+        cursorRequest.onerror = (event) => {
+          reject(event.target.error);
+        };
+      };
+    });
+  };
+
   // Agrega una imagen asociada con un álbum existente
-  agregarImagenesAlbum = async (imageData) => {
+  agregarImagenesAlbum = async (arrayImagenes) => {
+    if (!this.db) {
+      console.error("Error: Base de datos no está disponible aún");
+      return;
+    }
     const transaction = this.db.transaction(["images"], "readwrite");
     const imageStore = transaction.objectStore("images");
 
-    // Recorre el array imageData y agrega cada imagen al álbum correspondiente
-    imageData.forEach((image) => {
+    // Recorre el array arrayImagenes y agrega cada imagen al álbum correspondiente
+    arrayImagenes.forEach((image) => {
       const imageRequest = imageStore.add(image);
       imageRequest.onsuccess = () => {
         console.log("Imagen agregada correctamente");
       };
       imageRequest.onerror = (error) => {
         console.error("Error al agregar imagen:", error);
+      };
+    });
+  };
+
+  agregarVideosAlbum = async (arrayVideos) => {
+    if (!this.db) {
+      console.error("Error: Base de datos no está disponible aún");
+      return;
+    }
+    const transaction = this.db.transaction(["videos"], "readwrite");
+    const videoStore = transaction.objectStore("videos");
+
+    // Recorre el array arrayVideos y agrega cada video al álbum correspondiente
+    arrayVideos.forEach((video) => {
+      const videoRequest = videoStore.add(video);
+      videoRequest.onsuccess = () => {
+        // console.log("Video agregado correctamente");
+      };
+      videoRequest.onerror = (error) => {
+        console.error("Error al agregar video:", error);
       };
     });
   };
@@ -298,12 +356,15 @@ class IndexedDBManager {
     };
   };
 
-  deleteAlbumsAndImages = async () => {
+  deleteAlbumsAndImagesAndVideos = async () => {
     const transactionAlbum = this.db.transaction(["albums"], "readwrite");
     const albumStore = transactionAlbum.objectStore("albums");
 
     const transactionImagen = this.db.transaction(["images"], "readwrite");
     const imageStore = transactionImagen.objectStore("images");
+
+    const transactionVideo = this.db.transaction(["videos"], "readwrite");
+    const videoStore = transactionVideo.objectStore("videos");
 
     // Eliminar todos los álbumes
     const eliminarAlbums = new Promise((resolve, reject) => {
@@ -331,7 +392,20 @@ class IndexedDBManager {
       imageStore.clear();
     });
 
-    await Promise.all([eliminarAlbums, eliminarImagenes]);
+    // Eliminar todas las videos
+    const eliminarVideos = new Promise((resolve, reject) => {
+      transactionVideo.oncomplete = () => {
+        console.log("Se eliminaron todas las videos");
+        resolve();
+      };
+      transactionVideo.onerror = (event) => {
+        console.error("Error al eliminar las videos:", event.target.error);
+        reject(event.target.error);
+      };
+      videoStore.clear();
+    });
+
+    await Promise.all([eliminarAlbums, eliminarImagenes,eliminarVideos ]);
 
     console.log("Se eliminó todo el contenido de las colecciones");
   };
@@ -359,6 +433,9 @@ class IndexedDBManager {
 
     const transactionImagen = this.db.transaction(["images"], "readonly");
     const imageStore = transactionImagen.objectStore("images");
+
+    const transactionVideo = this.db.transaction(["videos"], "readonly");
+    const videoStore = transactionVideo.objectStore("videos");
 
     const obtenerAlbums = new Promise((resolve, reject) => {
       const conexionAlbum = albumStore.openCursor();
@@ -388,11 +465,26 @@ class IndexedDBManager {
       };
     });
 
-    Promise.all([obtenerAlbums, obtenerImagenes])
-      .then(([arrayAlbum, arrayImagen]) => {
+    const obtenerVideos = new Promise((resolve, reject) => {
+      const conexionVideo = videoStore.openCursor();
+      const arrayVideo = [];
+      conexionVideo.onsuccess = (e) => {
+        const cursor = e.target.result;
+        if (cursor) {
+          arrayVideo.push(cursor.value);
+          cursor.continue();
+        } else {
+          resolve(arrayVideo);
+        }
+      };
+    });
+
+    Promise.all([obtenerAlbums, obtenerImagenes, obtenerVideos])
+      .then(([arrayAlbum, arrayImagen, arrayVideo]) => {
         const objExport = {
           arrayAlbums: arrayAlbum,
           arrayImages: arrayImagen,
+          arrayVideos: arrayVideo
         };
         this.descargarArrayJson(objExport);
         document.querySelector(".loader").style.display = "none";
@@ -414,7 +506,80 @@ class IndexedDBManager {
   };
 
   importar = (datos) => {
-    this.addAlbumsArray(datos.arrayAlbums); //AgregarAlbumes
-    this.agregarImagenesAlbum(datos.arrayImages); //Agregar imagenes
+    this.addAlbumsArray(datos.arrayAlbums); 
+    this.agregarImagenesAlbum(datos.arrayImages); 
+    this.agregarVideosAlbum(datos.arrayVideos);
   };
+
+
+  // VIDEO
+
+  deleteVideoById = (clave) => {
+    const trasaccion = this.db.transaction(["videos"], "readwrite");
+    const coleccionObjetos = trasaccion.objectStore("videos");
+    const request = coleccionObjetos.delete(clave);
+
+    request.onsuccess = () => {
+      // this.consultar();
+    };
+
+    request.onerror = (error) => {
+      console.error("Error al eliminar video:", error);
+    };
+  };
+
+  deleteVideosByAlbumId = (id_album) => {
+    const transaction = this.db.transaction(["videos"], "readwrite");
+    const objectStore = transaction.objectStore("videos");
+
+    const request = objectStore.openCursor();
+    request.onsuccess = (event) => {
+      const cursor = event.target.result;
+      if (cursor) {
+        const video = cursor.value;
+        if (video.id_album === id_album) {
+          cursor.delete();
+        }
+        cursor.continue();
+      } else {
+        // console.log('Todas las imágenes asociadas al álbum con ID', id_album, 'han sido eliminadas'); test
+        // this.consultar();
+      }
+    };
+
+    request.onerror = (event) => {
+      console.error(
+        "Error al abrir el cursor sobre el almacén de objetos:",
+        event.target.error
+      );
+    };
+  };
+
+  deleteAllvideos = async () => {
+    const transaction = this.db.transaction(["videos"],"readwrite");
+    const videoStore = transaction.objectStore("videos");
+    
+    //si no se quiere usar promise.all : return new Promise((resolve, reject)
+    const eliminarVideos = new Promise((resolve,reject)=>{
+
+      transaction.oncomplete = () => {
+        resolve();
+      };
+      transaction.onerror = (event) => {
+        reject(event.target.error);
+      };
+
+      videoStore.clear();
+    })
+
+    await Promise.all([eliminarVideos])
+    .then(() => {
+      console.log("Se eliminaron los videos");
+    })
+    .catch((error) => {
+        console.error("Ocurrió un error:", error);
+    });
+  }
+
+
 }

@@ -1,4 +1,4 @@
-const dbManager = new IndexedDBManager("ListaAlbums", 3);
+const dbManager = new IndexedDBManager("ListaAlbums", 4);
 let array_imagenes = [];
 let cantidadSeleccionada;
 // localStorage.setItem('pagina', 2);
@@ -14,17 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelector(".loader").style.display = "none";
 });
 
-
-// const cargarAnterioresAlbumes = () =>{
-
-  
-   
-//   const event = new Event('input', {
-//     bubbles: true, //progacion del evento en el DOM
-//     cancelable: true, //Se "puede" cancelar el evento
-//   });
-//   imagenes.dispatchEvent(event);
-// }
 
 
 cantidad.addEventListener('change', async function() {
@@ -128,7 +117,8 @@ imageBorrar.addEventListener("click", () => {
     if (confirm("¿Se borrara todos las imagenes asociadas?")) {
       dbManager.deleteAlbumById(pathSelected);
       dbManager.deleteImagesByAlbumId(pathSelected);
-      array_imagenes = array_imagenes.filter((e) => e.clave != pathSelected);
+      dbManager.deleteVideosByAlbumId(pathSelected);
+      
     }
   }
   imagen_zoom.classList.toggle("visible");
@@ -214,7 +204,7 @@ fileInputI.addEventListener("change", function (event) {
     document.querySelector(".loader").style.display = "block";
     lector.onload = async function () {
       const datos = JSON.parse(lector.result);
-      dbManager.deleteAlbumsAndImages();
+      dbManager.deleteAlbumsAndImagesAndVideos();
       dbManager.importar(datos);
       
       renderImages(pagina,cantidadSeleccionada);
@@ -237,10 +227,10 @@ columnas.addEventListener("input", () => {
   }
 });
 
-colorPicker.addEventListener("change", function () {
-  const color = this.value;
-  gallery.style.backgroundColor = color;
-});
+// colorPicker.addEventListener("change", function () {
+//   const color = this.value;
+//   gallery.style.backgroundColor = color;
+// });
 
 document.getElementById("boton-capturar").addEventListener("click", () => {
   document.querySelector(".loader").style.display = "block";
@@ -263,7 +253,6 @@ imagenes.addEventListener("input", () => {
     localStorage.setItem("pagina",pagina)
     document.querySelector(".loader").style.display = "block";
     setTimeout(async () => {
-     // array_imagenes = await dbManager.obtenerParteAlbumPaginada(pagina,cantidadSeleccionada);
       renderImages(pagina,cantidadSeleccionada);
       document.querySelector(".loader").style.display = "none";
       cargar = false;
