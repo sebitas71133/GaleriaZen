@@ -186,25 +186,30 @@ btnSalir.addEventListener("click", () => {
 // });
 
 const guardarAlbum = () => {
-  dbManager.exportar();
+  if(confirm("¿Desea exportar todos los albumes?")){
+    dbManager.exportar();
+  }
+  
 };
 
 const guardarPreviews = () => {
-  comprimirImagenesEnZIP(array_imagenes);
+  if(confirm("¿Desea exportar todas las imagenes de los albumes?")){
+    comprimirImagenesEnZIP(array_imagenes);
+  } 
 };
 
 // IMPORTAR
 
 fileInputI.addEventListener("change", function (event) {
   if (
-    confirm("Al importar se perderan todos los datos, procure exportar primero")
+    confirm("¿Desea importar otros albumes? No se perdera los albumes actuales")
   ) {
     const archivo = event.target.files[0];
     const lector = new FileReader();
     document.querySelector(".loader").style.display = "block";
     lector.onload = async function () {
       const datos = JSON.parse(lector.result);
-      dbManager.deleteAlbumsAndImagesAndVideos();
+      // dbManager.deleteAlbumsAndImagesAndVideos();
       dbManager.importar(datos);
       
       renderImages(pagina,cantidadSeleccionada);
@@ -214,6 +219,15 @@ fileInputI.addEventListener("change", function (event) {
     lector.readAsText(archivo);
   }
 });
+
+function deleteAll(){
+    if(confirm("¿Desea borrar todo?, procure exportar los albumes primero")){
+       if(confirm("seguro que desea borrar todo?")){
+          dbManager.deleteAlbumsAndImagesAndVideos();
+          renderImages();
+       }
+    }
+}
 
 const actualizarData = async () => {
   array_imagenes = await dbManager.obtenerTodo();
@@ -233,15 +247,17 @@ columnas.addEventListener("input", () => {
 // });
 
 document.getElementById("boton-capturar").addEventListener("click", () => {
-  document.querySelector(".loader").style.display = "block";
-  html2canvas(document.querySelector("#gallery")).then((canvas) => {
-    const imagen = canvas.toDataURL("image/png");
-    const enlaceDescarga = document.createElement("a");
-    enlaceDescarga.href = imagen;
-    enlaceDescarga.download = "captura_de_pantalla.png";
-    enlaceDescarga.click();
-    document.querySelector(".loader").style.display = "none";
-  });
+  if(confirm("¿Desea sacar una captura de pantalla de los albumes?")){
+    document.querySelector(".loader").style.display = "block";
+    html2canvas(document.querySelector("#gallery")).then((canvas) => {
+      const imagen = canvas.toDataURL("image/png");
+      const enlaceDescarga = document.createElement("a");
+      enlaceDescarga.href = imagen;
+      enlaceDescarga.download = "captura_de_pantalla.png";
+      enlaceDescarga.click();
+      document.querySelector(".loader").style.display = "none";
+    });
+  }
 });
 
 
@@ -257,5 +273,20 @@ imagenes.addEventListener("input", () => {
       document.querySelector(".loader").style.display = "none";
       cargar = false;
     }, 1000);
+  }
+});
+
+// TECLAS MOVER IMAGEN
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === "ArrowRight") {
+    getImagenByPosRight();
+  }
+  if (event.key === "ArrowLeft") {
+    getImagenByPosLeft();
+  }
+
+  if (event.key === "Escape") {
+    imagen_zoom.classList.toggle("visible");
   }
 });

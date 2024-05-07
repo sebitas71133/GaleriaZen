@@ -137,8 +137,13 @@ class IndexedDBManager {
         console.log("Imagen agregada correctamente");
       };
       imageRequest.onerror = (error) => {
-        console.error("Error al agregar imagen:", error);
+        if (error.target.error && error.target.error.name === 'ConstraintError') {
+          console.error('Error: La clave ya existe en el almacén de objetos.');
+        } else {
+          console.error('Error al agregar imagen:', error.target.error);
+        }
       };
+      
     });
   };
 

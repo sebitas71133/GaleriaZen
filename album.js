@@ -242,8 +242,9 @@ const deleteAll = () => {
 // CANVAS
 
 document.getElementById("boton-capturar").addEventListener("click", () => {
-  document.querySelector(".loader").style.display = "block";
-  html2canvas(document.querySelector("#gallery")).then((canvas) => {
+  if(confirm("¿Desea sacar una captura de pantalla a la galera?")){
+    document.querySelector(".loader").style.display = "block";
+    html2canvas(document.querySelector("#gallery")).then((canvas) => {
     const imagen = canvas.toDataURL("image/png");
     const enlaceDescarga = document.createElement("a");
     enlaceDescarga.href = imagen;
@@ -251,6 +252,7 @@ document.getElementById("boton-capturar").addEventListener("click", () => {
     enlaceDescarga.click();
     document.querySelector(".loader").style.display = "none";
   });
+  }
 });
 
 
@@ -303,7 +305,9 @@ const getNombreAlbum = (albumNameRoute) => {
 };
 
 const guardarAlbum = () => {
-  comprimirImagenesEnZIP(array_imagenes);
+  if(confirm("¿Desea exportar las imagenes?")){
+    comprimirImagenesEnZIP(array_imagenes);
+  }
 };
 
 
