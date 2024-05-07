@@ -216,7 +216,7 @@ fileInputI.addEventListener("change", function (event) {
       document.querySelector(".loader").style.display = "none";
       fileInputI.value = null;
     };
-    lector.readAsText(archivo);
+    lector.readAsText(archivo); //FileReader interpretará el contenido del archivo como texto y lo devolverá como una cadena de texto js
   }
 });
 

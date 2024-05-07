@@ -10,7 +10,7 @@ function convertirArchivoAURLBase64ConID(file) {
       reader.onerror = function(error) {
         reject(error);
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file); //obtienes una cadena de texto que comienza con data: seguido opcionalmente por el tipo MIME y ;base64,
     });
   }
 

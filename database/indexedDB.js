@@ -502,12 +502,17 @@ class IndexedDBManager {
   descargarArrayJson = (array) => {
     // Convertir el arreglo a JSON
 
+    // const jsonArreglo = JSON.stringify(array);
+    // const enlace = document.createElement("a");
+    // const blob = new Blob([jsonArreglo], { type: "application/json" });
+    // enlace.href = URL.createObjectURL(blob);
+    // enlace.download = "database.json";
+    // enlace.click();
+
+    //Usando la libreria file-reader se encapsula la complejidad.
     const jsonArreglo = JSON.stringify(array);
-    const enlace = document.createElement("a");
     const blob = new Blob([jsonArreglo], { type: "application/json" });
-    enlace.href = URL.createObjectURL(blob);
-    enlace.download = "database.json";
-    enlace.click();
+    saveAs(blob, "database.json");
   };
 
   importar = (datos) => {
