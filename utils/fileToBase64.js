@@ -5,6 +5,7 @@ function convertirArchivoAURLBase64ConID(file) {
       const reader = new FileReader(); 
       reader.onload = function() {
         const id = getNombreAlbum(file.name);
+        console.log(id);
         resolve({ clave: id, url: reader.result });
       };
       reader.onerror = function(error) {

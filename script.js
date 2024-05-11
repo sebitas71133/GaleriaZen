@@ -1,5 +1,5 @@
 const dbManager = new IndexedDBManager("ListaAlbums", 4);
-let array_imagenes = [];
+let array_albumes = [];
 let cantidadSeleccionada;
 // localStorage.setItem('pagina', 2);
 // localStorage.setItem('mostrar', 10);
@@ -23,12 +23,12 @@ cantidad.addEventListener('change', async function() {
 });
 
 const renderImages = async (pagina,cantidadSeleccionada) => {
-  array_imagenes =  await dbManager.obtenerParteAlbumPaginada(pagina,cantidadSeleccionada);
+  array_albumes =  await dbManager.obtenerParteAlbumPaginada(pagina,cantidadSeleccionada);
   gallery.innerHTML
-  = array_imagenes.map((item) => {
+  = array_albumes.map((item) => {
       return `
                
-                  <img loading="lazy" src="${item.url}" alt="" onclick= "handleZoomItemClick('${item.clave}','${item.url}')" />
+                  <img loading="lazy" src="${item.url}" title="${item.clave}" onclick= "handleZoomItemClick('${item.clave}','${item.url}')" />
                `;
     })
     .join("");
@@ -42,6 +42,7 @@ const handleZoomItemClick = (id, url) => {
   imagen_zoom.classList.toggle("visible");
   imagenZoom.src = url;
   positionActual = getPosition(pathSelected);
+  document.querySelector("#tituloImagen h1").textContent = id;
   
 };
 
@@ -68,7 +69,7 @@ imageEnter.addEventListener("click", () => {
 
 const getPosition = (id) => {
   let position = -1;
-  array_imagenes.forEach((e, index) => {
+  array_albumes.forEach((e, index) => {
     if (e.clave == id) {
       position = index;
     }
@@ -79,36 +80,44 @@ const getPosition = (id) => {
 
 //Funcion obtener imagen por posicion
 
-document.getElementById("imageNext").addEventListener("click", () => {
-  if (positionActual < array_imagenes.length - 1) {
+document.getElementById("imageNext").addEventListener("click", getImagenByPosRight) 
+
+function getImagenByPosRight(){
+  if (positionActual < array_albumes.length - 1) {
     positionActual = positionActual + 1;
   } else {
     positionActual = 0;
   }
-  array_imagenes.forEach((e, index) => {
+  array_albumes.forEach((e, index) => {
     if (index == positionActual) {
-      idSelected = e.clave;
+      pathSelected = e.clave;
       imagenZoom.src = e.url;
       positionActual = index;
+
+      document.querySelector("#tituloImagen h1").textContent = e.clave;
     }
   });
-}) 
+}
 
-document.getElementById("imageLeft").addEventListener("click", () => {
+document.getElementById("imageLeft").addEventListener("click", getImagenByPosLeft) 
+
+function getImagenByPosLeft(){
   if (positionActual > 0) {
     positionActual = positionActual - 1;
   } else {
-    positionActual = array_imagenes.length - 1;
+    positionActual = array_albumes.length - 1;
     
   }
-  array_imagenes.forEach((e, index) => {
+  array_albumes.forEach((e, index) => {
     if (index == positionActual) {
-      idSelected = e.clave;
+      pathSelected = e.clave;
       imagenZoom.src = e.url;
       positionActual = index;
+
+      document.querySelector("#tituloImagen h1").textContent = e.clave;
     }
   });
-}) 
+}
 
 //BORRAR UN ALBUM
 
@@ -156,7 +165,7 @@ uploadForm.addEventListener("submit", async function (event) {
   try {
     document.querySelector(".loader").style.display = "block";
     dbManager.addAlbumsArray(convertedImages);
-    array_imagenes = await dbManager.obtenerParteAlbumPaginada(1,cantidadSeleccionada);
+    array_albumes = await dbManager.obtenerParteAlbumPaginada(1,cantidadSeleccionada);
     convertedImages.length = 0; // Vaciar convertedImages después de agregar las imágenes al array
     fileInput.value = null;
     uploadForm.classList.toggle("visible");
@@ -194,7 +203,7 @@ const guardarAlbum = () => {
 
 const guardarPreviews = () => {
   if(confirm("¿Desea exportar todas las imagenes de los albumes?")){
-    comprimirImagenesEnZIP(array_imagenes);
+    comprimirImagenesEnZIP(array_albumes);
   } 
 };
 
@@ -230,7 +239,7 @@ function deleteAll(){
 }
 
 const actualizarData = async () => {
-  array_imagenes = await dbManager.obtenerTodo();
+  array_albumes = await dbManager.obtenerTodo();
 };
 
 // COLORES Y COLUMNAS

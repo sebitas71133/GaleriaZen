@@ -33,7 +33,7 @@
           <img
             id="icon_add"
             onclick="addPictures()"
-            src="./images/icons/guardar-datos.png"
+            src="./assets/icons/guardar-datos.png"
             alt=""
           />
           
@@ -45,7 +45,7 @@
             <img
           id="icon_delete"
           onclick="deleteAll()"
-          src="./images/icons/eliminar-base-de-datos.png"
+          src="./assets/icons/eliminar-base-de-datos.png"
           alt=""
           />
           
@@ -67,7 +67,7 @@
         <img
         id="icon_exportar"
         onclick="guardarAlbum()"
-        src="./images/icons/archivo-zip.png"
+        src="./assets/icons/archivo-zip.png"
         alt=""
         
         />
@@ -112,11 +112,13 @@
           <button type="button" id="btnSalir">Cancelar</button>
         </div>
       </form>
-      <div class="title"  contenteditable="true">
-        Videos :
+      <div class="navegar">
+        <div class="imagen-box">
+            <img src="assets/icons/icons8-left-arrow-96.png" onclick="beforeAlbum()" alt="">
+        </div>
+        <div class="imagen-box">
+          <img src="assets/icons/icons8-right-arrow-96.png" onclick="nextAlbum()" alt="">
       </div>
-      <div class="container-images video" id="galleryVideos">
-        
       </div>
       <div class="title"  contenteditable="true">
         Imagenes :
@@ -125,6 +127,12 @@
        
       </div>
 
+      <div class="title"  contenteditable="true">
+        Videos :
+      </div>
+      <div class="container-images video" id="galleryVideos">
+        
+      </div>
       
       
 
@@ -154,6 +162,8 @@
         alt=""
         />
         <img src="" id="imagenZoom" alt="" />
+        
+        
       </div>
     </main>
   </body>

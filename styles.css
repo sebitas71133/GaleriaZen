@@ -194,6 +194,17 @@ main .title {
   opacity: 0.5;
 }
 
+#tituloImagen {
+  position: absolute;
+  
+  top: 0;
+  font-size: 0.7rem;
+  z-index: 51;
+  opacity: 0.5;
+  
+}
+
+
 .container-images.top.ocultar {
   display: none;
 }

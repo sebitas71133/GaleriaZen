@@ -181,6 +181,95 @@ class IndexedDBManager {
     };
   };
 
+  getNextAlbumByActualId = (clave) => {
+
+    const connection = this.indexedDB.open(
+      this._databaseName,
+      this._databaseNameversion
+    );
+    
+    return new Promise((resolve,reject) =>{
+        connection.onsuccess = () =>{
+          const db = connection.result;
+          const transaction = db.transaction(["albums"], "readonly");
+          const coleccionAlbums = transaction.objectStore("albums");
+          const cursorRequest = coleccionAlbums.openCursor();
+          let encontradoActual = false;
+
+          cursorRequest.onsuccess = (e) => {
+            const cursor = e.target.result;
+            if (cursor) {
+              const album = cursor.value;
+              if (!encontradoActual && album.clave === clave) {
+                // Si encontramos el elemento actual
+                encontradoActual = true;
+                cursor.continue(); // Continuamos para buscar el siguiente elemento
+              } else if (encontradoActual) {
+                // Si ya encontramos el elemento actual y estamos en el siguiente
+                resolve(album); // Resolvemos la promesa con el siguiente elemento
+              } else {
+                // Si aún no hemos encontrado el elemento actual, continuamos con la búsqueda
+                cursor.continue(); 
+              } 
+            }
+          };
+        
+          cursorRequest.onerror = (event) => {
+            reject(event.target.error);
+          };
+        }
+    })
+  
+
+    
+   
+  };
+
+  getPreviousAlbumByActualId = (clave) => {
+    return new Promise((resolve, reject) => {
+      const trasaccion = this.db.transaction(["albums"], "readonly");
+      const coleccionObjetos = trasaccion.objectStore("albums");
+      const cursorRequest = coleccionObjetos.openCursor();
+  
+      let albumAnterior = null; // Variable para almacenar el elemento anterior
+      let encontradoActual = false;
+  
+      cursorRequest.onsuccess = (e) => {
+        const cursor = e.target.result;
+        if (cursor) {
+          const album = cursor.value;
+          
+          if (album.clave === clave) {
+            // Si encontramos el elemento actual
+            encontradoActual = true;
+            // Si ya encontramos el elemento actual y ya hemos almacenado el elemento anterior
+            if (albumAnterior) {
+              resolve(albumAnterior); // Resolvemos la promesa con el elemento anterior
+              return; // Finalizamos la búsqueda
+            }
+          } else {
+            // Si aún no hemos encontrado el elemento actual, almacenamos el elemento actual como el anterior
+            albumAnterior = album;
+          }
+          
+          cursor.continue(); // Continuamos con el siguiente elemento
+        } else {
+          // Si no hay más elementos en la tienda de objetos o no se encontró el elemento actual
+          reject(new Error("It's the first one :)."));
+        }
+      };
+  
+      cursorRequest.onerror = (error) => {
+        console.error("Error al obtener elementos:", error);
+        reject(error);
+      };
+    });
+  };
+  
+  
+  
+  
+
   obtenerTodo = () => {
     return new Promise((resolve, reject) => {
       const connection = this.indexedDB.open(

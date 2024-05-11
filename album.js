@@ -3,15 +3,20 @@ let pagina = 1;
 let cantidadSeleccionada = 10;
 let array_imagenes = [];
 let array_videos = [];
+let nextAlbumE;
+let previousAlbum;
+
 const dbManager = new IndexedDBManager("ListaAlbums", 4);
 
 document.addEventListener("DOMContentLoaded", async function () {
   const params = new URLSearchParams(window.location.search);
   albumName = params.get("album");
   document.querySelector(".loader").style.display = "block";
-  // array_imagenes = await dbManager.getImagesByAlbumId(albumName);
   renderPreviews();
   document.querySelector(".loader").style.display = "none";
+  nextAlbumE = await dbManager.getNextAlbumByActualId(albumName);
+  previousAlbum = await dbManager.getPreviousAlbumByActualId(albumName);
+  
 });
 
 recargarPagina.addEventListener("click",()=>{
@@ -22,11 +27,6 @@ recargarPagina.addEventListener("click",()=>{
 const renderPreviews = async () => {
   array_imagenes = await dbManager.getImagesByAlbumId(albumName);
   array_videos   = await dbManager.getVideosByAlbumId(albumName)
-  gallery.innerHTML = array_imagenes
-    .map((item) => {
-      return `<img src="${item.url}" alt="" onclick= "handleZoomItemClick('${item.url}','${item.clave}')" />`;
-    })
-    .join("");
 
   galleryVideos.innerHTML = array_videos
     .map((item) => {
@@ -41,6 +41,14 @@ const renderPreviews = async () => {
       `; 
     })
     .join("");
+
+  gallery.innerHTML = array_imagenes
+    .map((item) => {
+      return `<img src="${item.url}" alt="" onclick= "handleZoomItemClick('${item.url}','${item.clave}')" />`;
+    })
+    .join("");
+
+  
 };
 
 const handleDeleteClick = (clave) => {
@@ -342,4 +350,23 @@ function generateSecureRandomId() {
   const array = new Uint32Array(1);
   window.crypto.getRandomValues(array);
   return array[0].toString(16);
+}
+
+
+// CAMBIAR ENTRE ALBUMES
+
+function beforeAlbum(){
+    try {
+      const url = `album.html?album=${previousAlbum.clave}`
+      window.location.href = url;
+    } catch (error) {
+      console.log("It'the first one");
+    }
+}
+
+function nextAlbum(){
+  const url = `album.html?album=${nextAlbumE.clave}`
+  window.location.href = url;
+  // console.log(nextId);
+  // console.log(previousAlbum);
 }
