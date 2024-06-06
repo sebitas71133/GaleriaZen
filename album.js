@@ -17,9 +17,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   document.querySelector(".loader").style.display = "none";
   nextAlbumE = await dbManager.getNextAlbumByActualId(albumName);
   previousAlbum = await dbManager.getPreviousAlbumByActualId(albumName);
-  
 });
-
+    
 recargarPagina.addEventListener("click",()=>{
      const url = `index.html`
      window.location.href = url;
@@ -366,8 +365,15 @@ function beforeAlbum(){
 }
 
 function nextAlbum(){
-  const url = `album.html?album=${nextAlbumE.clave}`
-  window.location.href = url;
+  try {
+    if(!nextAlbumE) return;
+
+    const url = `album.html?album=${nextAlbumE.clave}`
+    window.location.href = url;
+  } catch (error) {
+    console.log("It'the last one");
+  }
+  
   // console.log(nextId);
   // console.log(previousAlbum);
 }

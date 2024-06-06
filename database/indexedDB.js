@@ -195,10 +195,11 @@ class IndexedDBManager {
           const coleccionAlbums = transaction.objectStore("albums");
           const cursorRequest = coleccionAlbums.openCursor();
           let encontradoActual = false;
-
+          let lastAlbum;
           cursorRequest.onsuccess = (e) => {
             const cursor = e.target.result;
             if (cursor) {
+              lastAlbum = cursor.value;
               const album = cursor.value;
               if (!encontradoActual && album.clave === clave) {
                 // Si encontramos el elemento actual
@@ -211,6 +212,9 @@ class IndexedDBManager {
                 // Si aún no hemos encontrado el elemento actual, continuamos con la búsqueda
                 cursor.continue(); 
               } 
+            }else{
+             // reject(new Error("It's the last one :)."));
+             resolve(lastAlbum)
             }
           };
         
@@ -233,10 +237,11 @@ class IndexedDBManager {
   
       let albumAnterior = null; // Variable para almacenar el elemento anterior
       let encontradoActual = false;
-  
+      let firstAlbum;
       cursorRequest.onsuccess = (e) => {
         const cursor = e.target.result;
         if (cursor) {
+          firstAlbum = cursor.value;
           const album = cursor.value;
           
           if (album.clave === clave) {
@@ -255,7 +260,7 @@ class IndexedDBManager {
           cursor.continue(); // Continuamos con el siguiente elemento
         } else {
           // Si no hay más elementos en la tienda de objetos o no se encontró el elemento actual
-          reject(new Error("It's the first one :)."));
+          resolve(firstAlbum);
         }
       };
   
