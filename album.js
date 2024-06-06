@@ -11,6 +11,7 @@ const dbManager = new IndexedDBManager("ListaAlbums", 4);
 document.addEventListener("DOMContentLoaded", async function () {
   const params = new URLSearchParams(window.location.search);
   albumName = params.get("album");
+  document.getElementById('albumName').textContent = albumName;
   document.querySelector(".loader").style.display = "block";
   renderPreviews();
   document.querySelector(".loader").style.display = "none";
