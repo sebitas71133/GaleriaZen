@@ -45,7 +45,7 @@ main {
 
 .container-images {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(5, minmax(250px, 1fr));
   align-items: center;
 
   
@@ -68,11 +68,11 @@ main {
 }
 
 .container-images.album {
-  grid-template-columns: repeat(1, minmax(250px, 1fr));
+  grid-template-columns: repeat(5, minmax(250px, 1fr));
 }
 
 .container-images.video {
-  grid-template-columns: repeat(1, minmax(250px, 1fr));
+  grid-template-columns: repeat(5, minmax(250px, 1fr));
 }
 
 .container-images img {
