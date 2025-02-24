@@ -11,109 +11,76 @@
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="header.css" />
     <link rel="stylesheet" href="form.css" />
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/file-saver@2/dist/FileSaver.min.js"></script>
 
-
-
     <title>Album de Imagenes</title>
   </head>
   <body>
-    <header style="position: unset;">
+    <header style="position: unset">
       <div class="title">
         <span><a href="#" id="recargarPagina">Album Zen</a></span>
       </div>
-      
+
       <div class="imagenes-box">
+        <div class="imagen-box">
+          <label>UPLOAD</label>
+          <img id="icon_add" src="./assets/icons/guardar-datos.png" alt="" />
+        </div>
 
         <div class="imagen-box">
-
-          <label>UPLOAD</label>
+          <label>DELETE</label>
           <img
-            id="icon_add"
-            src="./assets/icons/guardar-datos.png"
+            id="icon_delete"
+            onclick="deleteAll()"
+            src="./assets/icons/eliminar-base-de-datos.png"
             alt=""
           />
-          
         </div>
 
         <div class="imagen-box">
-
-          <label>DELETE</label>
-            <img
-          id="icon_delete"
-          onclick="deleteAll()"
-          src="./assets/icons/eliminar-base-de-datos.png"
-          alt=""
-          />
-          
-        </div>
-
-        <div class="imagen-box">
-
           <label>ZIP</label>
-            <img
-          id="icon_delete"
-          onclick="guardarPreviews()"
-          src="./assets/icons/archivo-zip.png"
-          alt=""
+          <img
+            id="icon_delete"
+            onclick="guardarPreviews()"
+            src="./assets/icons/archivo-zip.png"
+            alt=""
           />
-          
         </div>
 
         <div class="imagen-box">
           <label>SCREENSHOT</label>
-          <img
-          id="boton-capturar"
-          src="./assets/icons/camara.png"
-          alt=""  
-          />
-          
-          
+          <img id="boton-capturar" src="./assets/icons/camara.png" alt="" />
         </div>
-  
-        <div class="imagen-box">
 
+        <div class="imagen-box">
           <label>EXPORT</label>
           <img
-          id="icon_exportar"
-          onclick="guardarAlbum()"
-          src="./assets/icons/descargando-datos.png"
-          alt=""
-          
+            id="icon_exportar"
+            onclick="guardarAlbum()"
+            src="./assets/icons/descargando-datos.png"
+            alt=""
           />
-          
         </div>
         <!-- onclick="importarAlbum()" -->
         <div class="imagen-box importar">
-            <label>IMPORT</label>
-            <img
-            id="icon_subir"
-           
-            src="./assets/icons/subir.png"
-            alt="" 
-          />
+          <label>IMPORT</label>
+          <img id="icon_subir" src="./assets/icons/subir.png" alt="" />
 
-        
           <div class="input-box">
-            <input  type="file" id="fileInputI" name="filesI[]" accept=".json" />
+            <input type="file" id="fileInputI" name="filesI[]" accept=".json" />
           </div>
-          
         </div>
-  
-        
-      
       </div>
       <div class="input-box flex-row">
         <div>
           <label id="paginacion">
             <p>#Pagina:</p>
           </label>
-          <input type="number" id="imagenes" min="1" value="1" step="1">
+          <input type="number" id="imagenes" min="1" value="1" step="1" />
         </div>
-        
 
         <div>
           <label>
@@ -127,17 +94,15 @@
             <option value="50">50</option>
           </select>
         </div>
-        
       </div>
-      
+
       <div class="opciones-columnas">
         <label class="label-input-columnas" for="columnas">
-          #Columnas:
-          <input type="number" id="columnas" min="1" max="5" value="5">
+          #Columns:
+          <input type="number" id="columnas" min="1" max="5" value="5" />
         </label>
-     
       </div>
-      
+
       <!-- <input type="color" id="colorPicker"> -->
     </header>
     <main id="pageCapture">
@@ -145,7 +110,13 @@
 
       <form id="uploadForm" enctype="multipart/form-data">
         <div class="input-box">
-          <input type="file" id="fileInput" name="files[]" multiple accept="image/*"/>
+          <input
+            type="file"
+            id="fileInput"
+            name="files[]"
+            multiple
+            accept="image/*"
+          />
         </div>
         <div class="container-botones">
           <button type="submit">Subir</button>
@@ -153,48 +124,36 @@
         </div>
       </form>
 
-      <div class="title" id="title" contenteditable="true">
-        PORTADAS
-      </div>
+      <div class="title" id="title" contenteditable="true">COVERS</div>
       <div class="container-images" id="gallery">
         <!-- <img src="assets/test/Abaddon_Artifact_g29lrz.webp" alt="" />
         <img src="assets/test/Chen_Artifact_h44cqy.webp" alt="" /> -->
       </div>
-      
-      <div class="imagen-zoom" id="imagen_zoom" >
+
+      <div class="imagen-zoom" id="imagen_zoom">
         <img
           id="imageClose"
           class="imageClose"
           src="assets/icons/cerrar.png"
           alt="cerrar.png"
         />
-       
+
         <img
-            id="imageEnter"
-            class="imageEnter"
-            src="assets/icons/entrar.png"
-            alt="enter.png"
-          />
+          id="imageEnter"
+          class="imageEnter"
+          src="assets/icons/entrar.png"
+          alt="enter.png"
+        />
 
-          <img
-            id="imageBorrar"
-            class="imageBorrar"
-            src="assets/icons/borrar_red.png"
-            alt="Borrar.png"
-          />
+        <img
+          id="imageBorrar"
+          class="imageBorrar"
+          src="assets/icons/borrar_red.png"
+          alt="Borrar.png"
+        />
 
-              <img
-            id="imageNext"
-            
-            src="assets/icons/proximo2.png"
-            alt=""
-            />
-            <img
-            id="imageLeft"
-            src="assets/icons/anterior2.png"
-            alt=""
-            />
-
+        <img id="imageNext" src="assets/icons/proximo2.png" alt="" />
+        <img id="imageLeft" src="assets/icons/anterior2.png" alt="" />
 
         <img src="" id="imagenZoom" alt="" />
 
@@ -205,10 +164,8 @@
     </main>
   </body>
 
-
   <script src="utils/fileToBase64.js"></script>
   <script src="utils/exportarZip.js"></script>
   <script src="database/indexedDB.js"></script>
   <script src="script.js"></script>
-  
 </html>

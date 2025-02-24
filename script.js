@@ -10,22 +10,23 @@ document.addEventListener("DOMContentLoaded", function () {
   cantidadSeleccionada = JSON.parse(localStorage.getItem("mostrar")) || 10;
   imagenes.value = pagina;
   cantidad.value = cantidadSeleccionada;
-  renderImages(pagina,cantidadSeleccionada);
+  renderImages(pagina, cantidadSeleccionada);
   document.querySelector(".loader").style.display = "none";
 });
 
-
-
-cantidad.addEventListener('change', async function() {
-    cantidadSeleccionada = parseInt(cantidad.value);
-    localStorage.setItem('mostrar', cantidadSeleccionada);
-    renderImages(pagina,cantidadSeleccionada);
+cantidad.addEventListener("change", async function () {
+  cantidadSeleccionada = parseInt(cantidad.value);
+  localStorage.setItem("mostrar", cantidadSeleccionada);
+  renderImages(pagina, cantidadSeleccionada);
 });
 
-const renderImages = async (pagina,cantidadSeleccionada) => {
-  array_albumes =  await dbManager.obtenerParteAlbumPaginada(pagina,cantidadSeleccionada);
-  gallery.innerHTML
-  = array_albumes.map((item) => {
+const renderImages = async (pagina, cantidadSeleccionada) => {
+  array_albumes = await dbManager.obtenerParteAlbumPaginada(
+    pagina,
+    cantidadSeleccionada
+  );
+  gallery.innerHTML = array_albumes
+    .map((item) => {
       return `
                
                   <img loading="lazy" src="${item.url}" title="${item.clave}" onclick= "handleZoomItemClick('${item.clave}','${item.url}')" />
@@ -43,7 +44,6 @@ const handleZoomItemClick = (id, url) => {
   imagenZoom.src = url;
   positionActual = getPosition(pathSelected);
   document.querySelector("#tituloImagen h1").textContent = id;
-  
 };
 
 // showZoomForm = () => {
@@ -80,9 +80,11 @@ const getPosition = (id) => {
 
 //Funcion obtener imagen por posicion
 
-document.getElementById("imageNext").addEventListener("click", getImagenByPosRight) 
+document
+  .getElementById("imageNext")
+  .addEventListener("click", getImagenByPosRight);
 
-function getImagenByPosRight(){
+function getImagenByPosRight() {
   if (positionActual < array_albumes.length - 1) {
     positionActual = positionActual + 1;
   } else {
@@ -99,14 +101,15 @@ function getImagenByPosRight(){
   });
 }
 
-document.getElementById("imageLeft").addEventListener("click", getImagenByPosLeft) 
+document
+  .getElementById("imageLeft")
+  .addEventListener("click", getImagenByPosLeft);
 
-function getImagenByPosLeft(){
+function getImagenByPosLeft() {
   if (positionActual > 0) {
     positionActual = positionActual - 1;
   } else {
     positionActual = array_albumes.length - 1;
-    
   }
   array_albumes.forEach((e, index) => {
     if (index == positionActual) {
@@ -127,22 +130,31 @@ imageBorrar.addEventListener("click", () => {
       dbManager.deleteAlbumById(pathSelected);
       dbManager.deleteImagesByAlbumId(pathSelected);
       dbManager.deleteVideosByAlbumId(pathSelected);
-      
     }
   }
   imagen_zoom.classList.toggle("visible");
-  renderImages(pagina,cantidadSeleccionada);
+  renderImages(pagina, cantidadSeleccionada);
 });
 
 //GUARDAR IMAGENES AL CARGARLOS
 
-document.getElementById("icon_add").addEventListener("click",()=>{
+document.getElementById("icon_add").addEventListener("click", () => {
   uploadForm.classList.toggle("visible");
-})
+});
 
 let convertedImages = [];
-fileInput.addEventListener("change", async function () {
-  const files = this.files;
+fileInput.addEventListener("change", async function (event) {
+  const files = event.target.files;
+
+  const maxSize = 2 * 1024 * 1024; // 2MB
+
+  for (let file of files) {
+    if (file.size > maxSize) {
+      alert(`El archivo ${file.name} es demasiado grande (máximo 2MB).`);
+      fileInput.value = ""; // Borra la selección
+      return; // Salir del evento
+    }
+  }
 
   for (let i = 0; i < files.length; i++) {
     if (files[i].type.startsWith("image/")) {
@@ -153,7 +165,7 @@ fileInput.addEventListener("change", async function () {
         console.error("Error al convertir el archivo:", error);
       }
     } else {
-      fileInput.value = null;
+      fileInput.value = "";
       alert("Por favor, seleccione solo imágenes.");
     }
   }
@@ -165,11 +177,14 @@ uploadForm.addEventListener("submit", async function (event) {
   try {
     document.querySelector(".loader").style.display = "block";
     dbManager.addAlbumsArray(convertedImages);
-    array_albumes = await dbManager.obtenerParteAlbumPaginada(1,cantidadSeleccionada);
+    array_albumes = await dbManager.obtenerParteAlbumPaginada(
+      1,
+      cantidadSeleccionada
+    );
     convertedImages.length = 0; // Vaciar convertedImages después de agregar las imágenes al array
     fileInput.value = null;
     uploadForm.classList.toggle("visible");
-    renderImages(pagina,cantidadSeleccionada);
+    renderImages(pagina, cantidadSeleccionada);
     document.querySelector(".loader").style.display = "none";
   } catch (error) {
     console.log(error);
@@ -184,7 +199,6 @@ btnSalir.addEventListener("click", () => {
   uploadForm.classList.toggle("visible");
 });
 
-
 // window.addEventListener("scroll", function () {
 //   var header = document.querySelector("header");
 //   if (window.scrollY > 100) {
@@ -195,16 +209,15 @@ btnSalir.addEventListener("click", () => {
 // });
 
 const guardarAlbum = () => {
-  if(confirm("¿Desea exportar todos los albumes?")){
+  if (confirm("¿Desea exportar todos los albumes?")) {
     dbManager.exportar();
   }
-  
 };
 
 const guardarPreviews = () => {
-  if(confirm("¿Desea exportar todas las imagenes de los albumes?")){
+  if (confirm("¿Desea exportar todas las imagenes de los albumes?")) {
     comprimirImagenesEnZIP(array_albumes);
-  } 
+  }
 };
 
 // IMPORTAR
@@ -220,8 +233,8 @@ fileInputI.addEventListener("change", function (event) {
       const datos = JSON.parse(lector.result);
       // dbManager.deleteAlbumsAndImagesAndVideos();
       dbManager.importar(datos);
-      
-      renderImages(pagina,cantidadSeleccionada);
+
+      renderImages(pagina, cantidadSeleccionada);
       document.querySelector(".loader").style.display = "none";
       fileInputI.value = null;
     };
@@ -229,13 +242,13 @@ fileInputI.addEventListener("change", function (event) {
   }
 });
 
-function deleteAll(){
-    if(confirm("¿Desea borrar todo?, procure exportar los albumes primero")){
-       if(confirm("seguro que desea borrar todo?")){
-          dbManager.deleteAlbumsAndImagesAndVideos();
-          renderImages();
-       }
+function deleteAll() {
+  if (confirm("¿Desea borrar todo?, procure exportar los albumes primero")) {
+    if (confirm("seguro que desea borrar todo?")) {
+      dbManager.deleteAlbumsAndImagesAndVideos();
+      renderImages();
     }
+  }
 }
 
 const actualizarData = async () => {
@@ -256,7 +269,7 @@ columnas.addEventListener("input", () => {
 // });
 
 document.getElementById("boton-capturar").addEventListener("click", () => {
-  if(confirm("¿Desea sacar una captura de pantalla de los albumes?")){
+  if (confirm("¿Desea sacar una captura de pantalla de los albumes?")) {
     document.querySelector(".loader").style.display = "block";
     html2canvas(document.querySelector("#gallery")).then((canvas) => {
       const imagen = canvas.toDataURL("image/png");
@@ -269,16 +282,15 @@ document.getElementById("boton-capturar").addEventListener("click", () => {
   }
 });
 
-
 // PAGINACION
 let pagina = 1;
 imagenes.addEventListener("input", () => {
   {
     pagina = parseInt(imagenes.value);
-    localStorage.setItem("pagina",pagina)
+    localStorage.setItem("pagina", pagina);
     document.querySelector(".loader").style.display = "block";
     setTimeout(async () => {
-      renderImages(pagina,cantidadSeleccionada);
+      renderImages(pagina, cantidadSeleccionada);
       document.querySelector(".loader").style.display = "none";
       cargar = false;
     }, 1000);

@@ -13,22 +13,21 @@
     <link rel="stylesheet" href="form.css" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
- 
+
     <title>Album de Imagenes</title>
   </head>
   <body>
-
-    <header style="position: unset;">
+    <header style="position: unset">
       <div class="title">
-        <span><a href="#" id="recargarPagina">
-          <p style="margin-bottom: 2rem;">Galeria</p>
-          </a></span>
+        <span
+          ><a href="#" id="recargarPagina">
+            <p style="margin-bottom: 2rem">Galeria</p>
+          </a></span
+        >
       </div>
-      
-      <div class="imagenes-box">
-  
-        <div class="imagen-box">
 
+      <div class="imagenes-box">
+        <div class="imagen-box">
           <label>UPLOAD</label>
           <img
             id="icon_add"
@@ -36,76 +35,75 @@
             src="./assets/icons/guardar-datos.png"
             alt=""
           />
-          
         </div>
 
         <div class="imagen-box">
-
           <label>DELETE</label>
-            <img
-          id="icon_delete"
-          onclick="deleteAll()"
-          src="./assets/icons/eliminar-base-de-datos.png"
-          alt=""
+          <img
+            id="icon_delete"
+            onclick="deleteAll()"
+            src="./assets/icons/eliminar-base-de-datos.png"
+            alt=""
           />
-          
         </div>
 
+        <div class="imagen-box">
+          <label>SCREENSHOT</label>
+          <img id="boton-capturar" src="./assets/icons/camara.png" alt="" />
+        </div>
 
-      <div class="imagen-box">
-        <label>SCREENSHOT</label>
-        <img
-        id="boton-capturar"
-        src="./assets/icons/camara.png"
-        alt=""  
-        />
-      </div>
+        <div class="imagen-box">
+          <label>ZIP</label>
+          <img
+            id="icon_exportar"
+            onclick="guardarAlbum()"
+            src="./assets/icons/archivo-zip.png"
+            alt=""
+          />
+        </div>
 
-      <div class="imagen-box">
-
-        <label>ZIP</label>
-        <img
-        id="icon_exportar"
-        onclick="guardarAlbum()"
-        src="./assets/icons/archivo-zip.png"
-        alt=""
-        
-        />
-        
-      </div>
-
-      
-
-      
-      <!-- <div class="input-box">
+        <!-- <div class="input-box">
         <input  type="file" id="fileInputI" name="filesI[]" multiple accept=".json" />
       </div> -->
-        
       </div>
-      
-      
+
       <div class="opciones-columnas">
         <label class="label-input-columnas" for="columnas">
-          #Columnas:
-          <input type="number" id="columnas" name="columnas" min="1" max="5" value="5">
+          #Columns:
+          <input
+            type="number"
+            id="columnas"
+            name="columnas"
+            min="1"
+            max="5"
+            value="5"
+          />
         </label>
-       <label class="label-input-columnas videos" for="columnasVideos">
-            #Videos:
-            <input type="number" id="columnasVideos" min="1" value="1" style="margin-left: 20px;">
+        <label class="label-input-columnas videos" for="columnasVideos">
+          #Videos:
+          <input
+            type="number"
+            id="columnasVideos"
+            min="1"
+            value="1"
+            style="margin-left: 20px"
+          />
         </label>
       </div>
-      
-      
     </header>
-    
 
     <main id="pageCapture">
-
       <!-- SPINNER -->
-      <div class="loader"></div> 
+      <div class="loader"></div>
       <form id="uploadForm" enctype="multipart/form-data">
         <div class="input-box">
-          <input type="file" id="fileInput" name="files[]" multiple accept="image/*,video/*"/>
+          <input
+            type="file"
+            id="fileInput"
+            name="files[]"
+            multiple
+            accept="image/*,video/*"
+          />
         </div>
         <div class="container-botones">
           <button type="submit">Subir</button>
@@ -114,27 +112,28 @@
       </form>
       <div class="navegar">
         <div class="imagen-box">
-            <img src="assets/icons/icons8-left-arrow-96.png" onclick="beforeAlbum()" alt="">
+          <img
+            src="assets/icons/icons8-left-arrow-96.png"
+            onclick="beforeAlbum()"
+            alt=""
+          />
         </div>
         <div class="imagen-box">
-          <img src="assets/icons/icons8-right-arrow-96.png" onclick="nextAlbum()" alt="">
+          <img
+            src="assets/icons/icons8-right-arrow-96.png"
+            onclick="nextAlbum()"
+            alt=""
+          />
+        </div>
       </div>
+      <div class="title" contenteditable="true">
+        Images :
+        <p id="albumName"></p>
       </div>
-      <div class="title"  contenteditable="true">
-        Imágenes : <p id="albumName"></p>
-      </div>
-      <div class="container-images album" id="gallery">
-       
-      </div>
+      <div class="container-images album" id="gallery"></div>
 
-      <div class="title"  contenteditable="true">
-        Videos :
-      </div>
-      <div class="container-images video" id="galleryVideos">
-        
-      </div>
-      
-      
+      <div class="title" contenteditable="true">Videos :</div>
+      <div class="container-images video" id="galleryVideos"></div>
 
       <div class="imagen-zoom" id="imagen_zoom">
         <img
@@ -150,20 +149,18 @@
           alt="cerrar.png"
         />
         <img
-        id="imageNext"
-        onclick="getImagenByPosRight()"
-        src="assets/icons/proximo.png"
-        alt=""
+          id="imageNext"
+          onclick="getImagenByPosRight()"
+          src="assets/icons/proximo.png"
+          alt=""
         />
         <img
-        id="imageLeft"
-        onclick="getImagenByPosLeft()"
-        src="assets/icons/anterior.png"
-        alt=""
+          id="imageLeft"
+          onclick="getImagenByPosLeft()"
+          src="assets/icons/anterior.png"
+          alt=""
         />
         <img src="" id="imagenZoom" alt="" />
-        
-        
       </div>
     </main>
   </body>
@@ -173,5 +170,4 @@
   <script src="utils/exportarZip.js"></script>
   <script src="database/indexedDB.js"></script>
   <script src="album.js"></script>
-
 </html>

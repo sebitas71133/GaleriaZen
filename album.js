@@ -11,22 +11,22 @@ const dbManager = new IndexedDBManager("ListaAlbums", 4);
 document.addEventListener("DOMContentLoaded", async function () {
   const params = new URLSearchParams(window.location.search);
   albumName = params.get("album");
-  document.getElementById('albumName').textContent = albumName;
+  document.getElementById("albumName").textContent = albumName;
   document.querySelector(".loader").style.display = "block";
   renderPreviews();
   document.querySelector(".loader").style.display = "none";
   nextAlbumE = await dbManager.getNextAlbumByActualId(albumName);
   previousAlbum = await dbManager.getPreviousAlbumByActualId(albumName);
 });
-    
-recargarPagina.addEventListener("click",()=>{
-     const url = `index.html`
-     window.location.href = url;
-})
+
+recargarPagina.addEventListener("click", () => {
+  const url = `index.html`;
+  window.location.href = url;
+});
 
 const renderPreviews = async () => {
   array_imagenes = await dbManager.getImagesByAlbumId(albumName);
-  array_videos   = await dbManager.getVideosByAlbumId(albumName)
+  array_videos = await dbManager.getVideosByAlbumId(albumName);
 
   galleryVideos.innerHTML = array_videos
     .map((item) => {
@@ -38,7 +38,7 @@ const renderPreviews = async () => {
           </video>
           <button onclick="handleDeleteClick('${item.clave}')">Borrar</button>
         </div>
-      `; 
+      `;
     })
     .join("");
 
@@ -47,17 +47,14 @@ const renderPreviews = async () => {
       return `<img src="${item.url}" alt="" onclick= "handleZoomItemClick('${item.url}','${item.clave}')" />`;
     })
     .join("");
-
-  
 };
 
 const handleDeleteClick = (clave) => {
-
-  if(confirm("Seguro?")){
+  if (confirm("Seguro?")) {
     dbManager.deleteVideoById(clave);
     renderPreviews();
   }
-}
+};
 // COMPORTAMIENTO ZOOM AL HACER CLICK IMAGEN
 
 let idSelected;
@@ -152,52 +149,59 @@ function convertirArchivoAURLBase64ConID(file) {
 }
 
 async function convertirVideoAURLBase64ConID(file) {
-  let arrayBuffer= "";
-  let base64String="";
+  let arrayBuffer = "";
+  let base64String = "";
 
-  arrayBuffer = await  readFileAsArrayBuffer(file);
+  arrayBuffer = await readFileAsArrayBuffer(file);
   base64String = arrayBufferToBase64(arrayBuffer);
   const id = generateSecureRandomId();
-  return  data = {
-            "clave" : id,
-            "url" :   base64String,
-            "id_album" : albumName
-          }
+  return (data = {
+    clave: id,
+    url: base64String,
+    id_album: albumName,
+  });
 }
-
 
 let convertedImages = [];
 let convertedVideos = [];
 let data;
 fileInput.addEventListener("change", async function (event) {
   const files = event.target.files;
- 
+  const maxSize = 15 * 1024 * 1024; // 2MB
+
+  for (let file of files) {
+    if (file.size > maxSize) {
+      alert(`El archivo ${file.name} es demasiado grande (máximo 15MB).`);
+      fileInput.value = ""; // Borra la selección
+      return; // Salir del evento
+    }
+  }
 
   if (!files) return;
 
   try {
-      
     for (const file of files) {
       if (file.type.includes("video")) {
-        const { clave, url, id_album } = await convertirVideoAURLBase64ConID(file);
-         convertedVideos.push({clave,url,id_album})
+        const { clave, url, id_album } = await convertirVideoAURLBase64ConID(
+          file
+        );
+        convertedVideos.push({ clave, url, id_album });
         //  console.log(convertedVideos);
       } else if (file.type.includes("image")) {
-        const { clave, url, id_album } = await convertirArchivoAURLBase64ConID(file);
-         convertedImages.push({ clave, url, id_album }); 
+        const { clave, url, id_album } = await convertirArchivoAURLBase64ConID(
+          file
+        );
+        convertedImages.push({ clave, url, id_album });
         //  console.log(convertedImages);
-      }else{
+      } else {
         alert("Por favor, seleccione imagenes/videos");
       }
     }
-  
   } catch (error) {
-      console.error(error);
-  } finally{
-      fileInput.value = null;
+    console.error(error);
+  } finally {
+    fileInput.value = null;
   }
-
- 
 });
 
 // FORMULARIO CONFIRMAR - CANCELAR SUBIR IMAGENES
@@ -250,19 +254,18 @@ const deleteAll = () => {
 // CANVAS
 
 document.getElementById("boton-capturar").addEventListener("click", () => {
-  if(confirm("¿Desea sacar una captura de pantalla a la galera?")){
+  if (confirm("¿Desea sacar una captura de pantalla a la galera?")) {
     document.querySelector(".loader").style.display = "block";
     html2canvas(document.querySelector("#gallery")).then((canvas) => {
-    const imagen = canvas.toDataURL("image/png");
-    const enlaceDescarga = document.createElement("a");
-    enlaceDescarga.href = imagen;
-    enlaceDescarga.download = "captura_de_pantalla.png";
-    enlaceDescarga.click();
-    document.querySelector(".loader").style.display = "none";
-  });
+      const imagen = canvas.toDataURL("image/png");
+      const enlaceDescarga = document.createElement("a");
+      enlaceDescarga.href = imagen;
+      enlaceDescarga.download = "captura_de_pantalla.png";
+      enlaceDescarga.click();
+      document.querySelector(".loader").style.display = "none";
+    });
   }
 });
-
 
 // TECLAS MOVER IMAGEN
 
@@ -296,7 +299,6 @@ columnas.addEventListener("input", () => {
   }
 });
 
-
 columnasVideos.addEventListener("input", () => {
   {
     const numColumnas = parseInt(columnasVideos.value);
@@ -305,21 +307,16 @@ columnasVideos.addEventListener("input", () => {
   }
 });
 
-
-
 const getNombreAlbum = (albumNameRoute) => {
   const albumName = albumNameRoute.replace(/\.[^/.]+$/, "");
   return albumName;
 };
 
 const guardarAlbum = () => {
-  if(confirm("¿Desea exportar las imagenes?")){
+  if (confirm("¿Desea exportar las imagenes?")) {
     comprimirImagenesEnZIP(array_imagenes);
   }
 };
-
-
-
 
 // VIDEOS
 
@@ -339,7 +336,7 @@ function readFileAsArrayBuffer(file) {
 // Función para convertir un ArrayBuffer en una cadena base64
 function arrayBufferToBase64(arrayBuffer) {
   const bytes = new Uint8Array(arrayBuffer);
-  let binary = '';
+  let binary = "";
   for (let i = 0; i < bytes.byteLength; i++) {
     binary += String.fromCharCode(bytes[i]);
   }
@@ -352,28 +349,27 @@ function generateSecureRandomId() {
   return array[0].toString(16);
 }
 
-
 // CAMBIAR ENTRE ALBUMES
 
-function beforeAlbum(){
-    try {
-      const url = `album.html?album=${previousAlbum.clave}`
-      window.location.href = url;
-    } catch (error) {
-      console.log("It'the first one");
-    }
+function beforeAlbum() {
+  try {
+    const url = `album.html?album=${previousAlbum.clave}`;
+    window.location.href = url;
+  } catch (error) {
+    console.log("It'the first one");
+  }
 }
 
-function nextAlbum(){
+function nextAlbum() {
   try {
-    if(!nextAlbumE) return;
+    if (!nextAlbumE) return;
 
-    const url = `album.html?album=${nextAlbumE.clave}`
+    const url = `album.html?album=${nextAlbumE.clave}`;
     window.location.href = url;
   } catch (error) {
     console.log("It'the last one");
   }
-  
+
   // console.log(nextId);
   // console.log(previousAlbum);
 }
