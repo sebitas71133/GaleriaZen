@@ -18,6 +18,18 @@ Almacenamiento local con IndexedDB (permite más capacidad que localStorage)
   - **html2canvas** → Captura de pantalla
   - **jszip** → Comprimir archivos
   - **file-saver** → Descargar archivos
+ 
+## 🎨 Capturas de pantalla
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/d816d1df-9d61-4d86-9d78-da62b039233a" width="45%" />
+  <img src="https://github.com/user-attachments/assets/ecdc0447-6aa9-4475-b8ea-7b95145ce993" width="45%" />
+</div>
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/9b4fbb79-b354-4550-a032-3ea01713eca6" width="45%" />
+  <img src="https://github.com/user-attachments/assets/cedcad0b-2806-470d-8050-97805a392d23" width="45%" />
+</div>
 
 ## 🌐 Hosting
 
