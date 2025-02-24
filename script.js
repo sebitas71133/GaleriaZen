@@ -311,3 +311,9 @@ document.addEventListener("keydown", function (event) {
     imagen_zoom.classList.toggle("visible");
   }
 });
+
+// CLICK IMPORTAR
+
+document.getElementById("icon_subir").addEventListener("click", function () {
+  document.getElementById("fileInputI").click();
+});

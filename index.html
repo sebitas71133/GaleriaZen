@@ -74,33 +74,35 @@
           </div>
         </div>
       </div>
-      <div class="input-box flex-row">
-        <div>
-          <label id="paginacion">
-            <p>#Pagina:</p>
-          </label>
-          <input type="number" id="imagenes" min="1" value="1" step="1" />
-        </div>
-
-        <div>
-          <label>
-            <p>#Mostrar:</p>
-          </label>
-          <select name="cantidad" id="cantidad">
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-            <option value="40">40</option>
-            <option value="50">50</option>
-          </select>
-        </div>
-      </div>
 
       <div class="opciones-columnas">
-        <label class="label-input-columnas" for="columnas">
-          #Columns:
-          <input type="number" id="columnas" min="1" max="5" value="5" />
-        </label>
+        <div class="input-box flex-row">
+          <div>
+            <label id="paginacion">
+              <p>#Pagina:</p>
+            </label>
+            <input type="number" id="imagenes" min="1" value="1" step="1" />
+          </div>
+
+          <div>
+            <label>
+              <p>#Mostrar:</p>
+            </label>
+            <select name="cantidad" id="cantidad">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="40">40</option>
+              <option value="50">50</option>
+            </select>
+          </div>
+          <div>
+            <label class="label-input-columnas" for="columnas">
+              <p>#Columns:</p>
+            </label>
+            <input type="number" id="columnas" min="1" max="5" value="5" />
+          </div>
+        </div>
       </div>
 
       <!-- <input type="color" id="colorPicker"> -->

@@ -1,128 +1,148 @@
-
 a {
-    all: unset;
-    cursor: pointer;
-  }
-  
-  header {
-    background-color: #363062;
-    width: 100vw;
-    /* height: 35vh; */
-    height: 320px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 3;
-    transition: background-color 0.3s ease;
-    padding: 5px;
-    overflow: auto;
-    box-sizing: border-box;
-    overflow-y: hidden;
-  }
-  
-  header.transparente {
-    background-color: rgb(54, 48, 98, 0.5);
-  }
-  
-  header .title {
-    color: white;
-    font-size: 2rem;
-    font-weight: bolder;
-    /* margin-bottom: 2rem; */
-  }
+  all: unset;
+  cursor: pointer;
+}
 
-  
-  main {
-    padding: 1rem;
-    flex: 1;
-    
-    width: 100vw;
-  }
+header {
+  background-color: #363062;
+  width: 100%;
+  /* height: 35vh; */
+  /* height: 320px; */
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  transition: background-color 0.3s ease, height 0.3s ease;
+  padding: 10px 20px;
+  overflow: auto;
+  box-sizing: border-box;
+  overflow-y: hidden;
+}
 
-  .imagen-box {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 20%;
-    margin: 0;
-  }
+header.transparente {
+  background-color: rgb(54, 48, 98, 0.5);
+}
 
-  .imagen-box.importar {
-   
-    margin-top: 3rem;
-    
-  }
+header .title {
+  color: white;
+  font-size: 2rem;
+  font-weight: bolder;
+  text-align: center;
+  padding: 5px;
+  /* margin-bottom: 2rem; */
+}
 
-  
-  .imagen-box img {
-    width: 4rem;
-    height: auto;
-    cursor: pointer;
-    z-index: 3;
-    margin-top: 5px;
-    /* margin-left: 1rem; */
-    transition: 200ms ease-in-out;
-  }
+main {
+  padding: 1rem;
+  flex: 1;
 
-  
-  /* #icon_subir {
+  width: 100vw;
+}
+
+.imagen-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+  margin: 0;
+}
+
+.imagen-box.importar {
+  margin-top: 3rem;
+}
+
+.imagen-box img {
+  width: 4rem;
+  height: auto;
+  cursor: pointer;
+  z-index: 3;
+  margin-top: 5px;
+  /* margin-left: 1rem; */
+  transition: 200ms ease-in-out;
+}
+
+/* #icon_subir {
       margin-top: 3rem;
   } */
 
-  .imagen-box img:hover{
-     transform: scale(1.2);
+.imagen-box img:hover {
+  transform: scale(1.2);
+}
+
+.imagen-box label {
+  color: white;
+  font-size: 1rem;
+  font-weight: bolder;
+}
+
+.imagenes-box {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 50%;
+}
+
+.navegar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 10%;
+}
+
+@media (max-width: 600px) {
+  .imagenes-box img {
+    width: 3rem;
   }
 
   .imagen-box label {
-    color: white;
-    font-size: 1rem;
-    font-weight: bolder;
+    font-size: 0.7rem;
+    /* display: none; */
+  }
+
+  .imagen-box {
+    width: 10%;
   }
 
   .imagenes-box {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-    height: 50%;
+    flex-wrap: wrap;
   }
 
-  .navegar   {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 10%;
+  .imagen-box.importar {
+    margin-top: 2.3rem;
+  }
+}
+
+@media (max-width: 600px) {
+  header {
+    min-height: 150px; /* Reduce la altura en móviles */
+    padding: 5px 10px;
   }
 
-  @media (max-width:600px){
-    .imagenes-box img {
-      width: 3rem;
-    }   
-
-    .imagen-box label{
-      font-size: 0.7rem;
-      /* display: none; */
-    }
-
-    .imagen-box {
-      width: 10%;
-    }
-
-    .imagenes-box {
-      flex-wrap: wrap;
-    }
-
-    .imagen-box.importar {
-   
-      margin-top: 2.3rem;
-      
-    }
-    
+  header .title {
+    font-size: 1.5rem; /* Reduce tamaño del título */
   }
 
-  
+  .imagenes-box {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .imagen-box {
+    width: auto;
+  }
+
+  .imagen-box img {
+    width: 3rem;
+  }
+
+  .imagen-box label {
+    font-size: 0.7rem;
+  }
+}
