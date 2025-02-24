@@ -146,7 +146,7 @@ let convertedImages = [];
 fileInput.addEventListener("change", async function (event) {
   const files = event.target.files;
 
-  const maxSize = 2 * 1024 * 1024; // 2MB
+  const maxSize = 5 * 1024 * 1024; // 2MB
 
   for (let file of files) {
     if (file.size > maxSize) {
