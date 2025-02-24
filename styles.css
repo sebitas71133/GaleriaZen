@@ -259,6 +259,6 @@ main .title {
 }
 
 /* Oculta el input */
-.input-box input[type="file"] {
+.input-box #fileInputI {
   display: none;
 }
